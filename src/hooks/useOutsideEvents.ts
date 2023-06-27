@@ -11,19 +11,20 @@ export function useOutsideEvents(ref: any, handleClick: () => void) {
 			}
 		}
 
-		function handleEscapeKey(event: KeyboardEvent) {
-			if (event.key === "Escape") {
-				handleClick();
-			}
-		}
+		// function handleEscapeKey(event: KeyboardEvent) {
+		// 	if (event.key === "Escape") {
+		// 		handleClick();
+		// 	}
+		// }
+
 		// Bind
 		document.addEventListener("mousedown", handleClickOutside);
-		document.addEventListener("keydown", handleEscapeKey);
+		// document.addEventListener("keydown", handleEscapeKey);
 
 		return () => {
 			// dispose
 			document.removeEventListener("mousedown", handleClickOutside);
-			document.removeEventListener("keydown", handleEscapeKey);
+			// document.removeEventListener("keydown", handleEscapeKey);
 		};
 	}, [ref, handleClick]);
 }

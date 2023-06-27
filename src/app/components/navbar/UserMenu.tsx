@@ -1,14 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import Avatar from "../Avatar";
 import MenuItem from "./MenuItem";
 
 import { AiOutlineMenu } from "react-icons/ai";
+
+/* Hooks */
 import { useOutsideEvents } from "@/hooks/useOutsideEvents";
+import useRegisterModal from "@/hooks/useRegisterModal";
 
 export default function UserMenu() {
+	const registerModal = useRegisterModal();
+
 	const [isOpen, setIsOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -18,6 +23,11 @@ export default function UserMenu() {
 	);
 
 	useOutsideEvents(menuRef, toggleMenu);
+
+	const handleRegisterMenuClick = () => {
+		registerModal.onOpen();
+		toggleMenu();
+	};
 
 	return (
 		<div className="relative">
@@ -44,9 +54,9 @@ export default function UserMenu() {
 					ref={menuRef}
 					className="absolute w-[40vw] md:w-3/4 right-0 top-12 bg-white overflow-hidden rounded-xl shadow-md text-sm"
 				>
-					<ul className="">
+					<ul>
 						<MenuItem label="Login" onClick={() => {}} />
-						<MenuItem label="Register" onClick={() => {}} />
+						<MenuItem label="Register" onClick={handleRegisterMenuClick} />
 					</ul>
 				</div>
 			)}
