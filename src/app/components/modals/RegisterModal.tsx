@@ -17,6 +17,9 @@ import { FcGoogle } from "react-icons/fc";
 /* Hooks */
 import useRegisterModal from "@/hooks/useRegisterModal";
 
+/* Constants */
+import { API_ROUTES } from "../common/constants";
+
 const formDefaulValues = {
 	name: "",
 	email: "",
@@ -32,14 +35,17 @@ export default function RegisterModal() {
 		setLoading(true);
 
 		axios
-			.post("/api/register", data)
+			.post(API_ROUTES.REGISTER, data)
 			.then(() => {
+				reset();
 				registerModal.onClose();
 			})
 			.catch((error) => {
 				toast.error("Someting went wrong.");
 			})
-			.finally(() => setLoading(false));
+			.finally(() => {
+				setLoading(false);
+			});
 	};
 
 	// Form
@@ -47,6 +53,7 @@ export default function RegisterModal() {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset
 	} = useForm<FieldValues>({ defaultValues: formDefaulValues });
 
 	const bodyContent = (
@@ -105,6 +112,7 @@ export default function RegisterModal() {
 	return (
 		<Modal
 			disabled={loading}
+			isLoading={loading}
 			isOpen={registerModal.isOpen}
 			title="Registrer"
 			actionLabel="Continue"
