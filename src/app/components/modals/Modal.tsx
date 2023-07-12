@@ -11,6 +11,7 @@ interface ModalProps {
 	title?: string;
 	body?: React.ReactElement;
 	footer?: React.ReactElement;
+	isLoading?: boolean;
 	disabled?: boolean;
 	secondaryActionLabel?: string;
 	onClose?: () => void;
@@ -24,6 +25,7 @@ export default function Modal({
 	title,
 	body,
 	footer,
+	isLoading,
 	disabled,
 	onClose,
 	onConfirm,
@@ -94,7 +96,7 @@ export default function Modal({
 								<IoMdClose size={18} />
 							</button>
 							{/* Title */}
-							<p id="register-dialog" className="text-lg font-semibold">
+							<p id="dialog" className="text-lg font-semibold">
 								{title}
 							</p>
 						</header>
@@ -112,7 +114,7 @@ export default function Modal({
 										{secondaryActionLabel}
 									</Button>
 								)}
-								<Button onClick={handleConfirm} disabled={disabled}>
+								<Button onClick={handleConfirm} disabled={disabled} loading={isLoading}>
 									{actionLabel}
 								</Button>
 							</div>

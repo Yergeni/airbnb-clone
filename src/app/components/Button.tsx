@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
 import { IconType } from "react-icons";
+import { VscLoading } from "react-icons/vsc";
 
 type ButtonProps = {
 	children: React.ReactNode;
 	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	loading?: boolean;
 	disabled?: boolean;
 	outline?: boolean;
 	small?: boolean;
@@ -15,6 +17,7 @@ type ButtonProps = {
 export default function Button({
 	children,
 	onClick,
+	loading,
 	disabled,
 	outline,
 	small,
@@ -48,6 +51,12 @@ export default function Button({
 				/>
 			)}
 			{children}
+			{loading && (
+				<VscLoading
+					size={small ? 18 : 24}
+					className={`absolute right-4 animate-spin ${small ? "top-[0.35rem]" : "top-3"}`}
+				/>
+			)}
 		</button>
 	);
 }
