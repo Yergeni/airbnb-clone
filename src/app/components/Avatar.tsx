@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 
-export default function Avatar() {
+type AvatarProps = {
+	imgUrl?: string | null;
+};
+
+export default function Avatar({ imgUrl }: AvatarProps) {
 	return (
 		<Image
-			src="/images/placeholder.png"
+			src={imgUrl || "/images/placeholder.png"}
 			alt="Avatar"
 			className="rounded-full"
 			height="30"

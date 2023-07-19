@@ -64,7 +64,7 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 				>
 					<AiOutlineMenu />
 					<div className="hidden md:block">
-						<Avatar />
+						<Avatar imgUrl={currentUser?.image} />
 					</div>
 				</button>
 			</div>

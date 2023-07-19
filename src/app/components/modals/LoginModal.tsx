@@ -87,7 +87,7 @@ export default function LoginModal() {
 			<Button outline icon={FcGoogle} onClick={() => {}}>
 				Continue with Google
 			</Button>
-			<Button outline icon={AiFillGithub} onClick={() => {}}>
+			<Button outline icon={AiFillGithub} onClick={() => signIn('github')}>
 				Continue with GitHub
 			</Button>
 			<p className="text-neutral-500 text-center mt-4 font-light">
