@@ -94,7 +94,7 @@ export default function RegisterModal() {
 	const footerContent = (
 		<div className="flex flex-col gap-4 mt-3">
 			<hr />
-			<Button outline icon={FcGoogle} onClick={() => {}}>
+			<Button outline icon={FcGoogle} onClick={() => signIn('google')}>
 				Continue with Google
 			</Button>
 			<Button outline icon={AiFillGithub} onClick={() => signIn('github')}>
