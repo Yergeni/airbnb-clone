@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { signOut } from "next-auth/react"; // https://next-auth.js.org/getting-started/client#signout
 
 import Avatar from "../Avatar";
 import MenuItem from "./MenuItem";
@@ -10,9 +11,18 @@ import { AiOutlineMenu } from "react-icons/ai";
 /* Hooks */
 import { useOutsideEvents } from "@/hooks/useOutsideEvents";
 import useRegisterModal from "@/hooks/useRegisterModal";
+import useLoginModal from "@/hooks/useLoginModal";
 
-export default function UserMenu() {
+/* Entity models */
+import { User } from "@prisma/client";
+
+type UserMenuProps = {
+	currentUser?: User | null;
+};
+
+export default function UserMenu({ currentUser }: UserMenuProps) {
 	const registerModal = useRegisterModal();
+	const loginModal = useLoginModal();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -28,6 +38,16 @@ export default function UserMenu() {
 		registerModal.onOpen();
 		toggleMenu();
 	};
+
+	const handleLoginMenuClick = () => {
+		loginModal.onOpen();
+		toggleMenu();
+	};
+
+	const handleLogoutMenuClick = () => {
+		signOut();
+		toggleMenu();
+	}
 
 	return (
 		<div className="relative">
@@ -54,10 +74,22 @@ export default function UserMenu() {
 					ref={menuRef}
 					className="absolute w-[40vw] md:w-3/4 right-0 top-12 bg-white overflow-hidden rounded-xl shadow-md text-sm"
 				>
-					<ul>
-						<MenuItem label="Login" onClick={() => {}} />
-						<MenuItem label="Register" onClick={handleRegisterMenuClick} />
-					</ul>
+					{currentUser ? (
+						<ul>
+							<MenuItem label="My trips" onClick={() => {}} />
+							<MenuItem label="My favorites" onClick={() => {}} />
+							<MenuItem label="My reservations" onClick={() => {}} />
+							<MenuItem label="My properties" onClick={() => {}} />
+							<MenuItem label="Aribnb my home" onClick={() => {}} />
+							<hr />
+							<MenuItem label="logout" onClick={handleLogoutMenuClick} />
+						</ul>
+					) : (
+						<ul>
+							<MenuItem label="Login" onClick={handleLoginMenuClick} />
+							<MenuItem label="Register" onClick={handleRegisterMenuClick} />
+						</ul>
+					)}
 				</div>
 			)}
 		</div>

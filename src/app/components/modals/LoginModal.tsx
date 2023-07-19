@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react"; // https://next-auth.js.org/getting-started/client#signin
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 
 import Modal from "./Modal";
 import Button from "../Button";
@@ -11,43 +12,42 @@ import Heading from "../Heading";
 import Input from "../inputs/Input";
 
 /* Icons */
-import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import { AiFillGithub } from "react-icons/ai";
 
-/* Hooks */
+/* Custom Hooks */
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 
-/* Constants */
-import { API_ROUTES } from "../common/constants";
-
 const formDefaulValues = {
-	name: "",
 	email: "",
 	password: "",
 };
 
-export default function RegisterModal() {
+export default function LoginModal() {
+	const router = useRouter();
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
 
 	const [loading, setLoading] = useState(false);
 
-	const handleRegistration: SubmitHandler<FieldValues> = (data) => {
+	const handleLogin: SubmitHandler<FieldValues> = (data) => {
 		setLoading(true);
 
-		axios
-			.post(API_ROUTES.REGISTER, data)
-			.then(() => {
-				reset();
-				registerModal.onClose();
-			})
-			.catch((error) => {
-				toast.error("Someting went wrong.");
-			})
-			.finally(() => {
-				setLoading(false);
-			});
+		// https://next-auth.js.org/getting-started/client#signin
+		signIn("credentials", { ...data, redirect: false }).then((callback) => {
+			setLoading(false);
+
+			if (callback?.ok) {
+				toast.success("Logged in");
+				router.refresh();
+				loginModal.onClose();
+			}
+
+			if (callback?.error) {
+				toast.error(callback.error);
+			}
+		});
 	};
 
 	// Form
@@ -55,12 +55,11 @@ export default function RegisterModal() {
 		register,
 		handleSubmit,
 		formState: { errors },
-		reset
 	} = useForm<FieldValues>({ defaultValues: formDefaulValues });
 
 	const bodyContent = (
 		<div className="flex flex-col gap-4">
-			<Heading title="Welcome to Airbnb Clone" subtitle="Create an account" />
+			<Heading title="Welcome back" subtitle="Login to your account" />
 			<Input
 				id="email"
 				label="Email"
@@ -69,14 +68,6 @@ export default function RegisterModal() {
 				errors={errors}
 				required
 				autoFocus
-			/>
-			<Input
-				id="name"
-				label="Name"
-				disabled={loading}
-				register={register}
-				errors={errors}
-				required
 			/>
 			<Input
 				id="password"
@@ -100,15 +91,15 @@ export default function RegisterModal() {
 				Continue with GitHub
 			</Button>
 			<p className="text-neutral-500 text-center mt-4 font-light">
-				<span>Already have an account?</span>
+				<span>No have an account?</span>
 				<span
 					onClick={() => {
-						registerModal.onClose();
-						loginModal.onOpen();
+						loginModal.onClose();
+						registerModal.onOpen();
 					}}
 					className="text-neutral-900 font-semibold cursor-pointer hover:underline ml-2"
 				>
-					Log in
+					Register
 				</span>
 			</p>
 		</div>
@@ -118,11 +109,11 @@ export default function RegisterModal() {
 		<Modal
 			disabled={loading}
 			isLoading={loading}
-			isOpen={registerModal.isOpen}
-			title="Registrer"
+			isOpen={loginModal.isOpen}
+			title="Login"
 			actionLabel="Continue"
-			onClose={registerModal.onClose}
-			onConfirm={handleSubmit(handleRegistration)}
+			onClose={loginModal.onClose}
+			onConfirm={handleSubmit(handleLogin)}
 			body={bodyContent}
 			footer={footerContent}
 		/>

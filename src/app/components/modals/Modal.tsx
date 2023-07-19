@@ -32,7 +32,6 @@ export default function Modal({
 	secondaryAction,
 	secondaryActionLabel,
 }: ModalProps) {
-	const modalRef = useRef<HTMLDivElement>(null);
 	const [showModal, setShowModal] = useState(isOpen);
 
 	useEffect(() => {
@@ -71,7 +70,10 @@ export default function Modal({
 
 	return (
 		// BACKDROP
-		<div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70">
+		<div
+			className="
+			flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70"
+		>
 			{/* MODAL WRAPPER*/}
 			<div
 				role="dialog"
@@ -81,12 +83,14 @@ export default function Modal({
 				{/* CONTENT (NOTE: animation duration matches same as timeout for handling close modal) */}
 				<div
 					className={`translate duration-300 h-full
-	            ${showModal ? "translate-y-0" : "translate-y-full"}
-	            ${showModal ? "opacity-100" : "opacity-0"}
+							${showModal ? "opacity-100" : "opacity-0"}
 	          `}
 				>
 					{/* MODAL CONTAINER */}
-					<div className="translate relative flex flex-col h-full md:h-auto lg:h-auto w-full border-0 rounded-lg shadow-lg bg-white outline-none focus:outline-none">
+					<div
+						className="
+							translate relative flex flex-col h-full md:h-auto lg:h-auto w-full border-0 rounded-lg shadow-lg bg-white outline-none focus:outline-none"
+					>
 						{/* HEADER */}
 						<header className="relative flex items-center justify-center p-6 rounded-t border-b">
 							<button
@@ -114,7 +118,11 @@ export default function Modal({
 										{secondaryActionLabel}
 									</Button>
 								)}
-								<Button onClick={handleConfirm} disabled={disabled} loading={isLoading}>
+								<Button
+									onClick={handleConfirm}
+									disabled={disabled}
+									loading={isLoading}
+								>
 									{actionLabel}
 								</Button>
 							</div>

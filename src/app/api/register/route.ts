@@ -2,19 +2,9 @@ import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
 import prisma from "@/app/libs/prismadb";
-import { GenericType } from "typescript";
 
-// Exclude keys from type/interface
-function exclude<T extends {[key: string]: unknown}, Key extends keyof T>(
-	object: T,
-  keys: Key[]
-	): Omit<T, Key> {
-		// @ts-ignore
-		return Object.fromEntries(
-		// @ts-ignore
-    Object.entries(object).filter(([key]) => !keys.includes(key))
-  )
-}
+/* Utils */
+import { excludeKey } from "@/app/utils/excludeKey";
 
 const SALT_ROUNDS = 10;
 
@@ -33,5 +23,5 @@ export async function POST(request: Request) {
 		},
 	});
 
-	return NextResponse.json(exclude(user, ['hashedPassword']));
+	return NextResponse.json(excludeKey(user, ['hashedPassword']));
 }
