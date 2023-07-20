@@ -44,11 +44,28 @@ export default function RegisterModal() {
 		axios
 			.post(API_ROUTES.REGISTER, data)
 			.then(() => {
-				reset();
-				router.refresh();
-				registerModal.onClose();
+				const credentials: FieldValues = {
+					email: data.email,
+					password: data.password,
+				};
+				// Sign the user if succesfully registered
+				signIn("credentials", {
+					...credentials,
+					redirect: false,
+				}).then((callback) => {
+					if (callback?.ok) {
+						reset();
+						toast.success("Successfully registered!");
+						router.refresh();
+						registerModal.onClose();
+					}
+
+					if (callback?.error) {
+						toast.error(callback.error);
+					}
+				});
 			})
-			.catch((error) => {
+			.catch(() => {
 				toast.error("Someting went wrong.");
 			})
 			.finally(() => {
@@ -61,11 +78,14 @@ export default function RegisterModal() {
 		register,
 		handleSubmit,
 		formState: { errors },
-		reset
+		reset,
 	} = useForm<FieldValues>({ defaultValues: formDefaulValues });
 
 	const bodyContent = (
-		<form className="flex flex-col gap-4" onSubmit={handleSubmit(handleRegistration)}>
+		<form
+			className="flex flex-col gap-4"
+			onSubmit={handleSubmit(handleRegistration)}
+		>
 			<Heading title="Welcome to Airbnb Clone" subtitle="Create an account" />
 			<Input
 				id="email"
@@ -101,10 +121,10 @@ export default function RegisterModal() {
 	const footerContent = (
 		<div className="flex flex-col gap-4 mt-3">
 			<hr />
-			<Button outline icon={FcGoogle} onClick={() => signIn('google')}>
+			<Button outline icon={FcGoogle} onClick={() => signIn("google")}>
 				Continue with Google
 			</Button>
-			<Button outline icon={AiFillGithub} onClick={() => signIn('github')}>
+			<Button outline icon={AiFillGithub} onClick={() => signIn("github")}>
 				Continue with GitHub
 			</Button>
 			<p className="text-neutral-500 text-center mt-4 font-light">
