@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
+
+/* Next */
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import Modal from "./Modal";
 import Button from "../Button";
@@ -29,6 +32,7 @@ const formDefaulValues = {
 };
 
 export default function RegisterModal() {
+	const router = useRouter();
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
 
@@ -41,6 +45,7 @@ export default function RegisterModal() {
 			.post(API_ROUTES.REGISTER, data)
 			.then(() => {
 				reset();
+				router.refresh();
 				registerModal.onClose();
 			})
 			.catch((error) => {
@@ -60,7 +65,7 @@ export default function RegisterModal() {
 	} = useForm<FieldValues>({ defaultValues: formDefaulValues });
 
 	const bodyContent = (
-		<div className="flex flex-col gap-4">
+		<form className="flex flex-col gap-4" onSubmit={handleSubmit(handleRegistration)}>
 			<Heading title="Welcome to Airbnb Clone" subtitle="Create an account" />
 			<Input
 				id="email"
@@ -88,7 +93,9 @@ export default function RegisterModal() {
 				errors={errors}
 				required
 			/>
-		</div>
+
+			<input type="submit" hidden />
+		</form>
 	);
 
 	const footerContent = (

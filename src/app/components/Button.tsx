@@ -5,7 +5,8 @@ import { VscLoading } from "react-icons/vsc";
 
 type ButtonProps = {
 	children: React.ReactNode;
-	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 	loading?: boolean;
 	disabled?: boolean;
 	outline?: boolean;
@@ -17,6 +18,7 @@ type ButtonProps = {
 export default function Button({
 	children,
 	onClick,
+	type = 'button',
 	loading,
 	disabled,
 	outline,
@@ -26,6 +28,7 @@ export default function Button({
 }: ButtonProps) {
 	return (
 		<button
+			type={type}
 			onClick={onClick}
 			disabled={disabled}
 			className={`
