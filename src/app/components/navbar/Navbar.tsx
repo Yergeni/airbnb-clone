@@ -3,6 +3,7 @@ import Container from "../Container";
 import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
+import Categories from "./Categories";
 
 /* Entity models */
 import { User } from "@prisma/client";
@@ -22,6 +23,7 @@ export default function Navbar({ currentUser }: NavbarProps) {
 						<UserMenu currentUser={currentUser} />
 					</div>
 				</Container>
+				<Categories />
 			</div>
 		</nav>
 	);
