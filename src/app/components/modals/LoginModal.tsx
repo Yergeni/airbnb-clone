@@ -57,6 +57,11 @@ export default function LoginModal() {
 		formState: { errors },
 	} = useForm<FieldValues>({ defaultValues: formDefaulValues });
 
+	const toggleAuthProcess = () => {
+		loginModal.onClose();
+		registerModal.onOpen();
+	};
+
 	const bodyContent = (
 		<div className="flex flex-col gap-4">
 			<Heading title="Welcome back" subtitle="Login to your account" />
@@ -91,12 +96,9 @@ export default function LoginModal() {
 				Continue with GitHub
 			</Button>
 			<p className="text-neutral-500 text-center mt-4 font-light">
-				<span>No have an account?</span>
+				<span>First time using Airbnb Clone?</span>
 				<span
-					onClick={() => {
-						loginModal.onClose();
-						registerModal.onOpen();
-					}}
+					onClick={toggleAuthProcess}
 					className="text-neutral-900 font-semibold cursor-pointer hover:underline ml-2"
 				>
 					Register

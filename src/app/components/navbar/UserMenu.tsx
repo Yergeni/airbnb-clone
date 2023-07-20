@@ -34,6 +34,12 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 
 	useOutsideEvents(menuRef, toggleMenu);
 
+	const handleYourHome = () => {
+		if (!currentUser) {
+			return loginModal.onOpen();
+		}
+	}
+
 	const handleRegisterMenuClick = () => {
 		registerModal.onOpen();
 		toggleMenu();
@@ -53,10 +59,10 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 		<div className="relative">
 			<div className="flex flex-row items-center gap-3">
 				<button
-					onClick={() => console.log("TODO")}
+					onClick={handleYourHome}
 					className="hidden md:block py-3 px-4 rounded-full hover:bg-neutral-100 transition"
 				>
-					Airbnb your home
+					Your home
 				</button>
 				<button
 					onClick={toggleMenu}

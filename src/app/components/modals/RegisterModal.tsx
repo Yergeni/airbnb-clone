@@ -56,8 +56,13 @@ export default function RegisterModal() {
 		register,
 		handleSubmit,
 		formState: { errors },
-		reset
+		reset,
 	} = useForm<FieldValues>({ defaultValues: formDefaulValues });
+	
+	const toggleAuthProcess = () => {
+		registerModal.onClose();
+		loginModal.onOpen();
+	};
 
 	const bodyContent = (
 		<div className="flex flex-col gap-4">
@@ -94,19 +99,16 @@ export default function RegisterModal() {
 	const footerContent = (
 		<div className="flex flex-col gap-4 mt-3">
 			<hr />
-			<Button outline icon={FcGoogle} onClick={() => signIn('google')}>
+			<Button outline icon={FcGoogle} onClick={() => signIn("google")}>
 				Continue with Google
 			</Button>
-			<Button outline icon={AiFillGithub} onClick={() => signIn('github')}>
+			<Button outline icon={AiFillGithub} onClick={() => signIn("github")}>
 				Continue with GitHub
 			</Button>
 			<p className="text-neutral-500 text-center mt-4 font-light">
 				<span>Already have an account?</span>
 				<span
-					onClick={() => {
-						registerModal.onClose();
-						loginModal.onOpen();
-					}}
+					onClick={toggleAuthProcess}
 					className="text-neutral-900 font-semibold cursor-pointer hover:underline ml-2"
 				>
 					Log in
