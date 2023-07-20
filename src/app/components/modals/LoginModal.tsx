@@ -32,6 +32,7 @@ export default function LoginModal() {
 	const [loading, setLoading] = useState(false);
 
 	const handleLogin: SubmitHandler<FieldValues> = (data) => {
+		console.log(data)
 		setLoading(true);
 
 		// https://next-auth.js.org/getting-started/client#signin
@@ -63,7 +64,7 @@ export default function LoginModal() {
 	};
 
 	const bodyContent = (
-		<div className="flex flex-col gap-4">
+		<form className="flex flex-col gap-4" onSubmit={handleSubmit(handleLogin)}>
 			<Heading title="Welcome back" subtitle="Login to your account" />
 			<Input
 				id="email"
@@ -83,7 +84,9 @@ export default function LoginModal() {
 				errors={errors}
 				required
 			/>
-		</div>
+			<input type="submit" hidden />
+			{/* <Button type="submit">Login</Button> */}
+		</form>
 	);
 
 	const footerContent = (

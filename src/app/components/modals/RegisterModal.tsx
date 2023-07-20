@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
+
+/* Next */
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import Modal from "./Modal";
 import Button from "../Button";
@@ -29,6 +32,7 @@ const formDefaulValues = {
 };
 
 export default function RegisterModal() {
+	const router = useRouter();
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
 
@@ -40,10 +44,28 @@ export default function RegisterModal() {
 		axios
 			.post(API_ROUTES.REGISTER, data)
 			.then(() => {
-				reset();
-				registerModal.onClose();
+				const credentials: FieldValues = {
+					email: data.email,
+					password: data.password,
+				};
+				// Sign the user if succesfully registered
+				signIn("credentials", {
+					...credentials,
+					redirect: false,
+				}).then((callback) => {
+					if (callback?.ok) {
+						reset();
+						toast.success("Successfully registered!");
+						router.refresh();
+						registerModal.onClose();
+					}
+
+					if (callback?.error) {
+						toast.error(callback.error);
+					}
+				});
 			})
-			.catch((error) => {
+			.catch(() => {
 				toast.error("Someting went wrong.");
 			})
 			.finally(() => {
@@ -65,7 +87,10 @@ export default function RegisterModal() {
 	};
 
 	const bodyContent = (
-		<div className="flex flex-col gap-4">
+		<form
+			className="flex flex-col gap-4"
+			onSubmit={handleSubmit(handleRegistration)}
+		>
 			<Heading title="Welcome to Airbnb Clone" subtitle="Create an account" />
 			<Input
 				id="email"
@@ -93,7 +118,9 @@ export default function RegisterModal() {
 				errors={errors}
 				required
 			/>
-		</div>
+
+			<input type="submit" hidden />
+		</form>
 	);
 
 	const footerContent = (
