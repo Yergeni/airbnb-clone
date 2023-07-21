@@ -12,6 +12,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useOutsideEvents } from "@/hooks/useOutsideEvents";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import useLoginModal from "@/hooks/useLoginModal";
+import useRentModal from "@/hooks/useRentModal";
 
 /* Entity models */
 import { User } from "@prisma/client";
@@ -23,6 +24,7 @@ type UserMenuProps = {
 export default function UserMenu({ currentUser }: UserMenuProps) {
 	const registerModal = useRegisterModal();
 	const loginModal = useLoginModal();
+	const rentModal = useRentModal();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -34,11 +36,13 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 
 	useOutsideEvents(menuRef, toggleMenu);
 
-	const handleYourHome = () => {
+	const handleYourRents = () => {
 		if (!currentUser) {
 			return loginModal.onOpen();
 		}
-	}
+
+		rentModal.onOpen();
+	};
 
 	const handleRegisterMenuClick = () => {
 		registerModal.onOpen();
@@ -53,16 +57,21 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 	const handleLogoutMenuClick = () => {
 		signOut();
 		toggleMenu();
-	}
+	};
+
+	const handleMenuItemClick = (executeFn: () => void) => {
+		executeFn();
+		toggleMenu();
+	};
 
 	return (
 		<div className="relative">
 			<div className="flex flex-row items-center gap-3">
 				<button
-					onClick={handleYourHome}
+					onClick={handleYourRents}
 					className="hidden md:block py-3 px-4 rounded-full hover:bg-neutral-100 transition"
 				>
-					Your home
+					Your rents
 				</button>
 				<button
 					onClick={toggleMenu}
@@ -86,7 +95,10 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 							<MenuItem label="My favorites" onClick={() => {}} />
 							<MenuItem label="My reservations" onClick={() => {}} />
 							<MenuItem label="My properties" onClick={() => {}} />
-							<MenuItem label="Aribnb my home" onClick={() => {}} />
+							<MenuItem
+								label="Aribnb my rent"
+								onClick={() => handleMenuItemClick(rentModal.onOpen)}
+							/>
 							<hr />
 							<MenuItem label="logout" onClick={handleLogoutMenuClick} />
 						</ul>

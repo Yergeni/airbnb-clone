@@ -1,11 +1,12 @@
 import "./globals.css";
 import { Nunito } from "next/font/google";
-
 import { Toaster } from "react-hot-toast";
 
+/* Components */
 import Navbar from "./components/navbar/Navbar";
 import LoginModal from "./components/modals/LoginModal";
 import RegisterModal from "./components/modals/RegisterModal";
+import RentModal from "./components/modals/RentModal";
 
 /* Actions */
 import getCurrentUser from "./actions/getCurrentUser";
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				<Toaster />
 				<RegisterModal />
 				<LoginModal />
+				<RentModal />
 				<Navbar currentUser={currentUser} />
 				{children}
 			</body>
