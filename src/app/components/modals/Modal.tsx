@@ -13,6 +13,7 @@ interface ModalProps {
 	footer?: React.ReactElement;
 	isLoading?: boolean;
 	disabled?: boolean;
+	disabledSecondary?: boolean;
 	secondaryActionLabel?: string;
 	onClose?: () => void;
 	onConfirm?: () => void;
@@ -27,6 +28,7 @@ export default function Modal({
 	footer,
 	isLoading,
 	disabled,
+	disabledSecondary,
 	onClose,
 	onConfirm,
 	secondaryAction,
@@ -59,12 +61,12 @@ export default function Modal({
 	}, [disabled, onConfirm]);
 
 	const handleSecondaryAction = useCallback(() => {
-		if (disabled || !secondaryAction) {
+		if (disabledSecondary || !secondaryAction) {
 			return;
 		}
 
 		secondaryAction();
-	}, [disabled, secondaryAction]);
+	}, [disabledSecondary, secondaryAction]);
 
 	if (!isOpen) return null;
 
@@ -112,7 +114,7 @@ export default function Modal({
 								{secondaryAction && secondaryActionLabel && (
 									<Button
 										onClick={handleSecondaryAction}
-										disabled={disabled}
+										disabled={disabledSecondary}
 										outline
 									>
 										{secondaryActionLabel}

@@ -18,7 +18,7 @@ export default function CategoryInput({
 	return (
 		<button
 			onClick={() => onClick(label)}
-			className={`w-full rounded-xl border-2 p-4 flex flex-col gap-3 hover:border-black transition cursor-pointer ${
+			className={`w-full rounded-xl border-2 p-4 flex flex-col items-start gap-3 hover:border-black transition cursor-pointer ${
 				selected ? "border-black" : "border-neutral-200"
 			}`}
 		>

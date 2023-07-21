@@ -2,10 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import dynamic from "next/dynamic";
 
+/* Components */
 import Modal from "./Modal";
 import Heading from "../Heading";
 import CategoryInput from "../inputs/CategoryInput";
+import CountrySelect from "../inputs/CountrySelect";
 
 /* Hooks */
 import useRentModal from "@/hooks/useRentModal";
@@ -51,11 +54,23 @@ export default function RentModal() {
 		watch,
 		formState: { errors },
 	} = useForm<RentFormValue>({ defaultValues: DEFAULT_VALUES });
-  console.log(watch())
+	const disabledNext =
+		(step === STEPS.CATEGORY && !watch("category")) ||
+		(step === STEPS.LOCATION && !watch("location"));
 
 	const categoryValue = watch("category");
-  // use a custon setValue to force re-render and registration
-	const setCustomValue = (id: keyof RentFormValue, value: unknown) => {
+	const locationValue = watch("location");
+
+	// Dynamic import of the Map to make it work in NextJS and load it everytime location changes
+	const DynamicMap = useMemo(
+		() => dynamic(() => import("../Map"), { ssr: false }),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[locationValue]
+	);
+	// console.log(categoryValue, locationValue);
+
+	// use a custon setValue to force re-render and registration
+	const setCustomValue = (id: keyof RentFormValue, value: any) => {
 		setValue(id, value, {
 			shouldValidate: true,
 			shouldDirty: true,
@@ -85,7 +100,7 @@ export default function RentModal() {
 		}
 	}, [step]);
 
-	const bodyContent = (
+	let bodyContent = (
 		<section className="flex flex-col gap-8">
 			<Heading
 				title="Which of these describes your place?"
@@ -106,6 +121,22 @@ export default function RentModal() {
 		</section>
 	);
 
+	if (step === STEPS.LOCATION) {
+		bodyContent = (
+			<section className="flex flex-col gap-8">
+				<Heading
+					title="Where is your place located?"
+					subtitle="Help guests find you!"
+				/>
+				<CountrySelect
+					value={locationValue}
+					onChange={(value) => setCustomValue("location", value)}
+				/>
+				<DynamicMap center={locationValue?.latlng} />
+			</section>
+		);
+	}
+
 	return (
 		<Modal
 			isOpen={rentModal.isOpen}
@@ -115,6 +146,7 @@ export default function RentModal() {
 			onConfirm={step === STEPS.PRICE ? undefined : onNext}
 			secondaryActionLabel={actionLabels.secondary}
 			secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
+			disabled={disabledNext}
 			body={bodyContent}
 		/>
 	);

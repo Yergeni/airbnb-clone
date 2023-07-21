@@ -1,6 +1,8 @@
+import { CountryValue } from "../inputs/types";
+
 export type RentFormValue = {
 	category: string;
-	location: any;
+	location: CountryValue | null;
 	guestCount: number;
 	roomCount: number;
 	bathroomCount: number;
@@ -9,3 +11,4 @@ export type RentFormValue = {
 	title: string;
 	description: string;
 };
+
