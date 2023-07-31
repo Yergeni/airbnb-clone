@@ -9,6 +9,8 @@ import Modal from "./Modal";
 import Heading from "../Heading";
 import CategoryInput from "../inputs/CategoryInput";
 import CountrySelect from "../inputs/CountrySelect";
+import CounterInput from "../inputs/CounterInput";
+import ImageUpload from "../inputs/ImageUpload";
 
 /* Hooks */
 import useRentModal from "@/hooks/useRentModal";
@@ -60,6 +62,9 @@ export default function RentModal() {
 
 	const categoryValue = watch("category");
 	const locationValue = watch("location");
+	const guestCountValue = watch("guestCount");
+	const roomCountValue = watch("roomCount");
+	const bathroomCountValue = watch("bathroomCount");
 
 	// Dynamic import of the Map to make it work in NextJS and load it everytime location changes
 	const DynamicMap = useMemo(
@@ -67,7 +72,6 @@ export default function RentModal() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[locationValue]
 	);
-	// console.log(categoryValue, locationValue);
 
 	// use a custon setValue to force re-render and registration
 	const setCustomValue = (id: keyof RentFormValue, value: any) => {
@@ -133,6 +137,49 @@ export default function RentModal() {
 					onChange={(value) => setCustomValue("location", value)}
 				/>
 				<DynamicMap center={locationValue?.latlng} />
+			</section>
+		);
+	}
+
+	if (step === STEPS.INFO) {
+		bodyContent = (
+			<section className="flex flex-col gap-8">
+				<Heading
+					title="Share some basics about your place"
+					subtitle="What amenities do you have?"
+				/>
+				<CounterInput
+					title="Guest capacity"
+					subtitle="How many guests will be allowed?"
+					value={guestCountValue}
+					onChange={(value) => setCustomValue("guestCount", value)}
+				/>
+				<hr />
+				<CounterInput
+					title="Rooms"
+					subtitle="How mant rooms does the rent has?"
+					value={roomCountValue}
+					onChange={(value) => setCustomValue("roomCount", value)}
+				/>
+				<hr />
+				<CounterInput
+					title="Bathrooms"
+					subtitle="How mant bathrooms does the rent has?"
+					value={bathroomCountValue}
+					onChange={(value) => setCustomValue("bathroomCount", value)}
+				/>
+			</section>
+		);
+	}
+
+	if (step === STEPS.IMAGES) {
+		bodyContent = (
+			<section className="flex flex-col gap-8">
+				<Heading
+					title="Add photos of your rent"
+					subtitle="Show guest what your rent looks like!"
+				/>
+				<ImageUpload />
 			</section>
 		);
 	}
