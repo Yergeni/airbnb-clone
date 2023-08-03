@@ -11,4 +11,3 @@ export type RentFormValue = {
 	title: string;
 	description: string;
 };
-

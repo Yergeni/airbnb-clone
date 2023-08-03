@@ -1,8 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import {
+	FieldValues,
+	SubmitHandler,
+	useForm,
+	UseFormRegister,
+} from "react-hook-form";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 /* Components */
 import Modal from "./Modal";
@@ -11,12 +19,14 @@ import CategoryInput from "../inputs/CategoryInput";
 import CountrySelect from "../inputs/CountrySelect";
 import CounterInput from "../inputs/CounterInput";
 import ImageUpload from "../inputs/ImageUpload";
+import Input from "../inputs/Input";
 
 /* Hooks */
 import useRentModal from "@/hooks/useRentModal";
 
 /* Constants */
 import { CATEGORIES } from "../navbar/constants";
+import { API_ROUTES } from "../common/constants";
 
 /* Types */
 import { RentFormValue } from "./types";
@@ -44,9 +54,11 @@ const DEFAULT_VALUES: RentFormValue = {
 };
 
 export default function RentModal() {
+	const router = useRouter();
 	const rentModal = useRentModal();
 
 	const [step, setStep] = useState(STEPS.CATEGORY);
+	const [isLoading, setIsLoading] = useState(false);
 
 	// Form
 	const {
@@ -55,16 +67,27 @@ export default function RentModal() {
 		setValue,
 		watch,
 		formState: { errors },
+		reset,
 	} = useForm<RentFormValue>({ defaultValues: DEFAULT_VALUES });
-	const disabledNext =
-		(step === STEPS.CATEGORY && !watch("category")) ||
-		(step === STEPS.LOCATION && !watch("location"));
 
+	// Watched values
 	const categoryValue = watch("category");
 	const locationValue = watch("location");
 	const guestCountValue = watch("guestCount");
 	const roomCountValue = watch("roomCount");
 	const bathroomCountValue = watch("bathroomCount");
+	const imageSrcValue = watch("imageSrc");
+	const titleValue = watch("title");
+	const descriptionValue = watch("description");
+	const priceValue = watch("price");
+
+	const disabledNext =
+		(step === STEPS.CATEGORY && !categoryValue) ||
+		(step === STEPS.LOCATION && !locationValue) ||
+		(step === STEPS.IMAGES && !imageSrcValue) ||
+		(step === STEPS.DESCRIPTION && (!titleValue || !descriptionValue)) ||
+		(step === STEPS.PRICE && !priceValue) ||
+		isLoading;
 
 	// Dynamic import of the Map to make it work in NextJS and load it everytime location changes
 	const DynamicMap = useMemo(
@@ -85,6 +108,24 @@ export default function RentModal() {
 	const onNext = () => setStep((value) => value + 1);
 	const onBack = () => setStep((value) => value - 1);
 
+	const onSubmit: SubmitHandler<RentFormValue> = (data) => {
+		if (step !== STEPS.PRICE) return onNext();
+
+		setIsLoading(true);
+
+		axios
+			.post(API_ROUTES.LISTINGS, data)
+			.then(() => {
+				toast("Listing created!");
+				router.refresh();
+				reset();
+				setStep(STEPS.CATEGORY);
+				rentModal.onClose();
+			})
+			.catch(() => toast.error("Something went wrong."))
+			.finally(() => setIsLoading(false));
+	};
+
 	const actionLabels = useMemo(() => {
 		switch (step) {
 			case STEPS.CATEGORY:
@@ -93,7 +134,7 @@ export default function RentModal() {
 				};
 			case STEPS.PRICE:
 				return {
-					primary: "Finish",
+					primary: "Create",
 					secondary: "Back",
 				};
 			default:
@@ -179,7 +220,60 @@ export default function RentModal() {
 					title="Add photos of your rent"
 					subtitle="Show guest what your rent looks like!"
 				/>
-				<ImageUpload />
+				<ImageUpload
+					value={imageSrcValue}
+					onChange={(value) => setCustomValue("imageSrc", value)}
+				/>
+			</section>
+		);
+	}
+
+	if (step === STEPS.DESCRIPTION) {
+		bodyContent = (
+			<section className="flex flex-col gap-8">
+				<Heading
+					title="How will you describe your rent?"
+					subtitle="Short and sweet works best!"
+				/>
+				<Input
+					id="title"
+					label="Title"
+					register={register as unknown as UseFormRegister<FieldValues>}
+					errors={errors}
+					required
+					disabled={isLoading}
+				/>
+				<hr />
+				<Input
+					id="description"
+					label="Description"
+					register={register as unknown as UseFormRegister<FieldValues>}
+					errors={errors}
+					required
+					disabled={isLoading}
+				/>
+			</section>
+		);
+	}
+
+	// TODO: check issue
+	if (step === STEPS.PRICE) {
+		bodyContent = (
+			<section className="flex flex-col gap-8">
+				<Heading
+					title="Set your price?"
+					subtitle="How much will you charge per night?"
+				/>
+				<Input
+					id="price"
+					label="Price"
+					type="number"
+					formatPrice
+					register={register as unknown as UseFormRegister<FieldValues>}
+					errors={errors}
+					required
+					disabled={isLoading}
+				/>
 			</section>
 		);
 	}
@@ -190,10 +284,11 @@ export default function RentModal() {
 			title="Airbnb your rents"
 			onClose={rentModal.onClose}
 			actionLabel={actionLabels.primary}
-			onConfirm={step === STEPS.PRICE ? undefined : onNext}
+			onConfirm={handleSubmit(onSubmit)}
 			secondaryActionLabel={actionLabels.secondary}
 			secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
 			disabled={disabledNext}
+			disabledSecondary={isLoading}
 			body={bodyContent}
 		/>
 	);
