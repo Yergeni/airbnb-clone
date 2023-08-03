@@ -41,16 +41,15 @@ export default function Modal({
 	}, [isOpen]);
 
 	const handleClose = useCallback(() => {
-		if (disabled || !onClose) {
+		if (!onClose) {
 			return;
 		}
-
 		setShowModal(false);
 		// The timeout is just for adding animation when modal closes
 		setTimeout(() => {
 			onClose();
 		}, 300);
-	}, [disabled, onClose]);
+	}, [onClose]);
 
 	const handleConfirm = useCallback(() => {
 		if (disabled || !onConfirm) {

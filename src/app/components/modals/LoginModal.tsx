@@ -32,7 +32,6 @@ export default function LoginModal() {
 	const [loading, setLoading] = useState(false);
 
 	const handleLogin: SubmitHandler<FieldValues> = (data) => {
-		console.log(data)
 		setLoading(true);
 
 		// https://next-auth.js.org/getting-started/client#signin

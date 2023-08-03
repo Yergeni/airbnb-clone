@@ -28,6 +28,8 @@ export default function Input({
 	required,
   autoFocus
 }: InputProps) {
+	const minPriceValue = type === "number" && formatPrice ? 1 : undefined;
+
 	return (
 		<div className="w-full relative">
 			{formatPrice && (
@@ -41,7 +43,7 @@ export default function Input({
         autoFocus={autoFocus}
 				id={id}
 				disabled={disabled}
-				{...register(id, { required })}
+				{...register(id, { required, min: minPriceValue })}
 				placeholder=" "
 				type={type}
 				className={`
