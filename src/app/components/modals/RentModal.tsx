@@ -236,6 +236,7 @@ export default function RentModal() {
 					subtitle="Short and sweet works best!"
 				/>
 				<Input
+					key="title"
 					id="title"
 					label="Title"
 					register={register as unknown as UseFormRegister<FieldValues>}
@@ -245,6 +246,7 @@ export default function RentModal() {
 				/>
 				<hr />
 				<Input
+					key="description"
 					id="description"
 					label="Description"
 					register={register as unknown as UseFormRegister<FieldValues>}
@@ -256,7 +258,7 @@ export default function RentModal() {
 		);
 	}
 
-	// TODO: check issue
+	// TODO: check issue with inputs when back
 	if (step === STEPS.PRICE) {
 		bodyContent = (
 			<section className="flex flex-col gap-8">
@@ -265,6 +267,7 @@ export default function RentModal() {
 					subtitle="How much will you charge per night?"
 				/>
 				<Input
+					key="price"
 					id="price"
 					label="Price"
 					type="number"
