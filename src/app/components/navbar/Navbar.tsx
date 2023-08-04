@@ -23,8 +23,8 @@ export default function Navbar({ currentUser }: NavbarProps) {
 						<UserMenu currentUser={currentUser} />
 					</div>
 				</Container>
-				<Categories />
 			</div>
+			<Categories />
 		</nav>
 	);
 }
