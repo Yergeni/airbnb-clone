@@ -34,7 +34,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				<LoginModal />
 				<RentModal />
 				<Navbar currentUser={currentUser} />
-				{children}
+				{/* Listings section */}
+				<section className="pb-20 pt-28">{children}</section>
 			</body>
 		</html>
 	);
