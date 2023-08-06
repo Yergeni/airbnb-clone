@@ -1,7 +1,10 @@
 "use client";
 
 import type { User } from "@prisma/client";
+
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+
+import useFavorite from "@/hooks/useFavorite";
 
 type HeartButtonProps = {
 	listingId: string;
@@ -12,8 +15,10 @@ export default function HeartButton({
 	listingId,
 	currentUser,
 }: HeartButtonProps) {
-	const isFavorite = false;
-	const toggleFavorite = () => {};
+	const { isListinInFavorites: isFavorite, toggleFavorite } = useFavorite(
+		listingId,
+		currentUser
+	);
 
 	return (
 		<button

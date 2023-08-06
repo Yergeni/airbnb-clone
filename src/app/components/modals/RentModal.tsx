@@ -258,7 +258,6 @@ export default function RentModal() {
 		);
 	}
 
-	// TODO: check issue with inputs when back
 	if (step === STEPS.PRICE) {
 		bodyContent = (
 			<section className="flex flex-col gap-8">

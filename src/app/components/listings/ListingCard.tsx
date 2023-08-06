@@ -16,6 +16,7 @@ import type { Listing, Reservation, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 type ListingCardProps = {
 	data: Listing;
@@ -86,7 +87,7 @@ export default function ListingCard({
 						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 						alt="listing"
 						src={data.imageSrc}
-						className="object-cover h-full w-full group-hover:scale-110 transition"
+						className="object-cover h-full w-full sm:group-hover:scale-105 transition"
 					/>
 					{/* Favorite Icon */}
 					<div className="absolute top-3 right-3">
