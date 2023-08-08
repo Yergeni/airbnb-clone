@@ -1,6 +1,6 @@
 import prisma from "@/app/libs/prismadb";
 
-export async function getListings() {
+export default async function getListings() {
 	try {
 		const listings = await prisma?.listing.findMany({
 			orderBy: {

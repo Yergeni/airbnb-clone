@@ -1,6 +1,6 @@
 /* This is a server component */
 
-import { getListings } from "./actions/getListings";
+import getListings from "./actions/getListings";
 import getCurrentUser from "./actions/getCurrentUser";
 
 import Container from "./components/Container";
