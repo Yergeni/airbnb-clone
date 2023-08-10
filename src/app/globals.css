@@ -30,3 +30,13 @@ body,
 	z-index: 0 !important;
 }
 
+/* Calendar Input overrides */
+.rdrMonth {
+	width: 100% !important;
+}
+
+.rdrCalendarWrapper {
+	font-size: 1rem !important;
+	width: 100% !important;
+}
+

@@ -13,6 +13,9 @@ import { CATEGORIES } from "@/app/components/navbar/constants";
 /* Types */
 import type { Listing, Reservation, User } from "@prisma/client";
 
+/* Hooks */
+import ListingReservation from "@/app/components/listings/ListingReservation";
+
 type ListingWithUser = Listing & { user: User };
 
 type ListingClientProps = {
@@ -23,7 +26,7 @@ type ListingClientProps = {
 
 export default function ListingClient({
 	listingWithUser,
-	reservations,
+	reservations = [],
 	currentUser,
 }: ListingClientProps) {
 	// get the category info from te listing
@@ -43,8 +46,8 @@ export default function ListingClient({
 						locationValue={listingWithUser.locationValue}
 						currentUser={currentUser}
 					/>
-					{/* Listing Info */}
 					<div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+						{/* Section: Listing Information */}
 						<ListingInfo
 							description={listingWithUser.description}
 							guestCount={listingWithUser.guestCount}
@@ -53,6 +56,13 @@ export default function ListingClient({
 							locationValue={listingWithUser.locationValue}
 							user={listingWithUser.user}
 							category={category}
+						/>
+						{/* Section: Reservation Section */}
+						<ListingReservation
+							listingId={listingWithUser.id}
+							listingPrice={listingWithUser.price}
+							reservations={reservations}
+							currentUser={currentUser}
 						/>
 					</div>
 				</div>
