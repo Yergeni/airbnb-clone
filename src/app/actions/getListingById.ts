@@ -2,7 +2,7 @@
 import prisma from "@/app/libs/prismadb";
 
 /** 
- * This action comunicates direclty from server to the DB 
+ * Gets a listing by ID
  * @params the listing id to search for
  * @returns a Listing object or null
  */

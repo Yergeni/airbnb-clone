@@ -40,3 +40,7 @@ body,
 	width: 100% !important;
 }
 
+.rdrDayDisabled {
+	background-color: rgb(234 234 234) !important;
+}
+
