@@ -20,7 +20,7 @@ type ListingWithUser = Listing & { user: User };
 
 type ListingClientProps = {
 	listingWithUser: ListingWithUser;
-	reservations?: Reservation[];
+	reservations?: Reservation[] | null;
 	currentUser?: User | null;
 };
 

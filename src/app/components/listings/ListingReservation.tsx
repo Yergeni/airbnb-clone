@@ -22,7 +22,7 @@ import type { Reservation, User } from "@prisma/client";
 import useLoginModal from "@/hooks/useLoginModal";
 
 type ListingReservationProps = {
-	reservations: Reservation[];
+	reservations?: Reservation[] | null;
 	listingId: string;
 	listingPrice: number;
 	currentUser?: User | null;
@@ -47,10 +47,10 @@ export default function ListingReservation({
 	const disabledDates = useMemo(() => {
 		let dates: Date[] = [];
 
-		reservations.forEach((reservations) => {
+		reservations?.forEach((reservation) => {
 			const reservedDates = eachDayOfInterval({
-				start: new Date(reservations.startDate),
-				end: new Date(reservations.endDate),
+				start: new Date(reservation.startDate),
+				end: new Date(reservation.endDate),
 			});
 
 			dates = [...dates, ...reservedDates];
@@ -129,7 +129,7 @@ export default function ListingReservation({
 				/>
 				<hr />
 				<div className="p-4">
-					<Button disabled={isLoading} onClick={onCreateReservation}>
+					<Button loading={isLoading} disabled={isLoading} onClick={onCreateReservation}>
 						Reserve
 					</Button>
 				</div>
