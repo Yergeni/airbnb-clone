@@ -32,7 +32,7 @@ export default function Modal({
 	onClose,
 	onConfirm,
 	secondaryAction,
-	secondaryActionLabel,
+	secondaryActionLabel = "Cancel",
 }: ModalProps) {
 	const [showModal, setShowModal] = useState(isOpen);
 
