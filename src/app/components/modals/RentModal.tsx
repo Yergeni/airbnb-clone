@@ -291,6 +291,7 @@ export default function RentModal() {
 			secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
 			disabled={disabledNext}
 			disabledSecondary={isLoading}
+			isLoading={isLoading}
 			body={bodyContent}
 		/>
 	);

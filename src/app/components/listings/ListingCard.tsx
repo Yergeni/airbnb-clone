@@ -22,9 +22,8 @@ type ListingCardProps = {
 	currentUser?: User | null;
 	reservation?: Reservation;
 	actionLabel?: string;
-	actionId?: string;
 	actionDisabled?: boolean;
-	onAction?: (id: string) => void;
+	onAction?: () => void;
 };
 
 export default function ListingCard({
@@ -32,7 +31,6 @@ export default function ListingCard({
 	data,
 	reservation,
 	actionLabel,
-	actionId = "",
 	actionDisabled,
 	onAction,
 }: ListingCardProps) {
@@ -63,21 +61,16 @@ export default function ListingCard({
 		return `${format(start, "PP")} - ${format(end, "PP")}`;
 	}, [reservation]);
 
-	const handleCancelReservation = useCallback(
-		(event: React.MouseEvent<HTMLButtonElement>) => {
-			event.stopPropagation();
+	const handleCardClick = useCallback(() => {
+		if (onAction) return;
 
-			if (actionDisabled) return;
-
-			onAction?.(actionId);
-		},
-		[actionId, actionDisabled, onAction]
-	);
+		router.push(`${ROUTES.LISTINGS}/${data.id}`);
+	}, [data.id, onAction, router]);
 
 	return (
 		<div
 			role="button"
-			onClick={() => router.push(`${ROUTES.LISTINGS}/${data.id}`)}
+			onClick={handleCardClick}
 			className="col-span-1 cursor-pointer group"
 		>
 			<div className="flex flex-col gap-2 w-full">
@@ -113,7 +106,7 @@ export default function ListingCard({
 					<Button
 						small
 						disabled={actionDisabled}
-						onClick={handleCancelReservation}
+						onClick={onAction}
 					>
 						{actionLabel}
 					</Button>
