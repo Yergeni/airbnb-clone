@@ -1,9 +1,11 @@
 "use client";
 
+import React from "react";
 import dynamic from "next/dynamic";
 
 /* Components */
 import Avatar from "../Avatar";
+import Loading from "../Loading";
 import ListingCategory from "./ListingCategory";
 
 /* Types */
@@ -13,7 +15,12 @@ import { CategoryType } from "../navbar/types";
 /* Hooks */
 import useCountries from "@/hooks/useCountries";
 
-const Map = dynamic(() => import("../Map"), { ssr: false });
+const Map = React.memo(
+	dynamic(() => import("../Map"), {
+		ssr: false,
+		loading: () => <Loading text="Retrieving location..." />,
+	})
+);
 
 type ListingInfoType = Pick<
 	Listing,
@@ -54,8 +61,8 @@ export default function ListingInfo({
 			{category && <ListingCategory {...category} />}
 			<hr />
 			<p className="text-lg font-light text-neutral-500">{description}</p>
-      <hr />
-      <Map center={coordinates} />
+			<hr />
+			<Map center={coordinates} />
 		</section>
 	);
 }
