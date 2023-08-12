@@ -13,7 +13,7 @@ import Button from "../Button";
 import CalendarInput from "../inputs/CalendarInput";
 
 /* Constants */
-import { API_ROUTES } from "@/app/components/common/constants";
+import { API_ROUTES, ROUTES } from "@/app/components/common/constants";
 
 /* Types */
 import type { Reservation, User } from "@prisma/client";
@@ -80,8 +80,7 @@ export default function ListingReservation({
 			.then(() => {
 				toast.success("Listing reserved!");
 				setDateRange(INITIAL_DATE_RANGE);
-				//TODO: Redirect to /trips
-				router.refresh();
+				router.push(ROUTES.TRIPS);
 			})
 			.catch(() => toast.error("Something went wrong."))
 			.finally(() => setIsLoading(false));

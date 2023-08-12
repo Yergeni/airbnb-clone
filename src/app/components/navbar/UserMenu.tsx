@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { signOut } from "next-auth/react"; // https://next-auth.js.org/getting-started/client#signout
+import { useRouter } from "next/navigation";
 
 import Avatar from "../Avatar";
 import MenuItem from "./MenuItem";
@@ -14,14 +15,19 @@ import useRegisterModal from "@/hooks/useRegisterModal";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRentModal from "@/hooks/useRentModal";
 
-/* Entity models */
-import { User } from "@prisma/client";
+/* Types */
+import type { User } from "@prisma/client";
+
+/* Constants */
+import { ROUTES } from "../common/constants";
 
 type UserMenuProps = {
 	currentUser?: User | null;
 };
 
 export default function UserMenu({ currentUser }: UserMenuProps) {
+	const router = useRouter();
+
 	const registerModal = useRegisterModal();
 	const loginModal = useLoginModal();
 	const rentModal = useRentModal();
@@ -91,7 +97,12 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 				>
 					{currentUser ? (
 						<ul>
-							<MenuItem label="My trips" onClick={() => {}} />
+							<MenuItem
+								label="My trips"
+								onClick={() =>
+									handleMenuItemClick(() => router.push(ROUTES.TRIPS))
+								}
+							/>
 							<MenuItem label="My favorites" onClick={() => {}} />
 							<MenuItem label="My reservations" onClick={() => {}} />
 							<MenuItem label="My properties" onClick={() => {}} />

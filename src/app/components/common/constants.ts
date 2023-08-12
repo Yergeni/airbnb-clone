@@ -1,7 +1,8 @@
 // API routes
 export const ROUTES = {
   HOME: '/',
-  LISTINGS: '/listings'
+  LISTINGS: '/listings',
+  TRIPS: '/trips'
 }
 
 // API routes
