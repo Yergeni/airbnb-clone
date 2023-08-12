@@ -16,15 +16,14 @@ import type { Listing, Reservation, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 
 type ListingCardProps = {
 	data: Listing;
 	currentUser?: User | null;
 	reservation?: Reservation;
-	disabled?: boolean;
 	actionLabel?: string;
 	actionId?: string;
+	actionDisabled?: boolean;
 	onAction?: (id: string) => void;
 };
 
@@ -32,9 +31,9 @@ export default function ListingCard({
 	currentUser,
 	data,
 	reservation,
-	disabled,
 	actionLabel,
 	actionId = "",
+	actionDisabled,
 	onAction,
 }: ListingCardProps) {
 	const router = useRouter();
@@ -42,6 +41,7 @@ export default function ListingCard({
 
 	// Get the country information
 	const location = getByValue(data.locationValue);
+
 	// Price from reservation otherwise the rent price
 	const price = useMemo(() => {
 		if (reservation) {
@@ -51,6 +51,7 @@ export default function ListingCard({
 		return data.price;
 	}, [reservation, data.price]);
 
+	// Formatted reservation date range
 	const reservationDate = useMemo(() => {
 		if (!reservation) {
 			return null;
@@ -66,11 +67,11 @@ export default function ListingCard({
 		(event: React.MouseEvent<HTMLButtonElement>) => {
 			event.stopPropagation();
 
-			if (disabled) return;
+			if (actionDisabled) return;
 
 			onAction?.(actionId);
 		},
-		[actionId, disabled, onAction]
+		[actionId, actionDisabled, onAction]
 	);
 
 	return (
@@ -79,7 +80,7 @@ export default function ListingCard({
 			onClick={() => router.push(`${ROUTES.LISTINGS}/${data.id}`)}
 			className="col-span-1 cursor-pointer group"
 		>
-			<div className="flex flex-col gap2 w-full">
+			<div className="flex flex-col gap-2 w-full">
 				<div className="aspect-square w-full relative overflow-hidden rounded-xl">
 					<Image
 						priority
@@ -102,14 +103,18 @@ export default function ListingCard({
 				<p className="font-light text-neutral-500">
 					{reservationDate || data.category}
 				</p>
-				{/* Price */}
+				{/* Price OR Total price */}
 				<div className="flex flex-row items-center gap-1">
 					<p className="font-semibold">${price}</p>
 					{!reservation && <span className="font-light">night</span>}
 				</div>
 				{/* Reservation Button */}
 				{onAction && actionLabel && (
-					<Button small disabled={disabled} onClick={handleCancelReservation}>
+					<Button
+						small
+						disabled={actionDisabled}
+						onClick={handleCancelReservation}
+					>
 						{actionLabel}
 					</Button>
 				)}
