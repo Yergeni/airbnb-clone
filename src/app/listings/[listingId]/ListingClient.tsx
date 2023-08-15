@@ -29,6 +29,8 @@ export default function ListingClient({
 	reservations = [],
 	currentUser,
 }: ListingClientProps) {
+	const isCurrentUserOwner = listingWithUser.userId === currentUser?.id;
+
 	// get the category info from te listing
 	const category = useMemo(() => {
 		return CATEGORIES.find((cat) => cat.label === listingWithUser.category);
@@ -45,8 +47,15 @@ export default function ListingClient({
 						imageSrc={listingWithUser.imageSrc}
 						locationValue={listingWithUser.locationValue}
 						currentUser={currentUser}
+						isCurrentUserOwner={isCurrentUserOwner}
 					/>
-					<div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+					<div
+						className={
+							!isCurrentUserOwner
+								? "grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6"
+								: "w-full"
+						}
+					>
 						{/* Section: Listing Information */}
 						<ListingInfo
 							description={listingWithUser.description}
@@ -56,14 +65,17 @@ export default function ListingClient({
 							locationValue={listingWithUser.locationValue}
 							user={listingWithUser.user}
 							category={category}
+							isCurrentUserOwner={isCurrentUserOwner}
 						/>
-						{/* Section: Reservation Section */}
-						<ListingReservation
-							listingId={listingWithUser.id}
-							listingPrice={listingWithUser.price}
-							reservations={reservations}
-							currentUser={currentUser}
-						/>
+						{/* Section: Reservation Section (Only to non owner users) */}
+						{!isCurrentUserOwner && (
+							<ListingReservation
+								listingId={listingWithUser.id}
+								listingPrice={listingWithUser.price}
+								reservations={reservations}
+								currentUser={currentUser}
+							/>
+						)}
 					</div>
 				</div>
 			</section>

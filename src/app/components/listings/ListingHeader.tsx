@@ -15,6 +15,7 @@ type ListingHeaderInfo = Pick<
 
 type ListingHeaderProps = ListingHeaderInfo & {
 	currentUser?: User | null;
+	isCurrentUserOwner?: boolean;
 };
 
 export default function ListingHeader({
@@ -23,6 +24,7 @@ export default function ListingHeader({
 	imageSrc,
 	locationValue,
 	currentUser,
+	isCurrentUserOwner,
 }: ListingHeaderProps) {
 	const { getByValue } = useCountries();
 
@@ -42,9 +44,11 @@ export default function ListingHeader({
 					className="object-cover w-full"
 				/>
 				{/* Favorite Button */}
-				<div className="absolute top-5 right-5">
-					<HeartButton listingId={id} currentUser={currentUser} />
-				</div>
+				{!isCurrentUserOwner && (
+					<div className="absolute top-5 right-5">
+						<HeartButton listingId={id} currentUser={currentUser} />
+					</div>
+				)}
 			</div>
 		</>
 	);

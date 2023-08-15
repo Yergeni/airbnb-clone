@@ -128,7 +128,11 @@ export default function ListingReservation({
 				/>
 				<hr />
 				<div className="p-4">
-					<Button loading={isLoading} disabled={isLoading} onClick={onCreateReservation}>
+					<Button
+						loading={isLoading}
+						disabled={isLoading}
+						onClick={onCreateReservation}
+					>
 						Reserve
 					</Button>
 				</div>

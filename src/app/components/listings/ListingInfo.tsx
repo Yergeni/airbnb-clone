@@ -29,6 +29,7 @@ type ListingInfoType = Pick<
 
 type ListingInfoProps = ListingInfoType & { user: User } & {
 	category?: CategoryType;
+	isCurrentUserOwner?: boolean;
 };
 
 export default function ListingInfo({
@@ -39,13 +40,19 @@ export default function ListingInfo({
 	locationValue,
 	user,
 	category,
+	isCurrentUserOwner,
 }: ListingInfoProps) {
 	const { getByValue } = useCountries();
 
 	const coordinates = getByValue(locationValue)?.latlng;
 
 	return (
-		<section id="listing-info" className="col-span-4 flex flex-col gap-8">
+		<section
+			id="listing-info"
+			className={`${
+				!isCurrentUserOwner ? "col-span-4" : ""
+			} flex flex-col gap-8`}
+		>
 			<div className="flex flex-col gap-2">
 				<div className="text-xl font-semibold flex flex-row items-center gap-2">
 					<p>Hosted by {user.name}</p>
