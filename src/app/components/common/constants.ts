@@ -2,7 +2,8 @@
 export const ROUTES = {
   HOME: '/',
   LISTINGS: '/listings',
-  TRIPS: '/trips'
+  TRIPS: '/trips',
+  RESERVATIONS: '/reservations' // reservations made by other users
 }
 
 // API routes

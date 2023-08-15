@@ -1,3 +1,7 @@
+/**
+ * NOTE: Trips are reservations the current user made to enjoy
+ */
+
 /* Server actions */
 import getCurrentUser from "../actions/getCurrentUser";
 import getReservations from "../actions/getReservations";

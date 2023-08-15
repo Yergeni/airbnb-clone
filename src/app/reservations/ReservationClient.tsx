@@ -5,32 +5,29 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-/* Components */
 import Heading from "../components/Heading";
 import Modal from "../components/modals/Modal";
 import Container from "../components/Container";
 import ListingCard from "../components/listings/ListingCard";
 import ListingGrid from "../components/listings/ListingGrid";
 
-/* Types */
+import { API_ROUTES } from "../components/common/constants";
+
 import type { User } from "@prisma/client";
 import type { ReservationsWithListing } from "../components/common/types";
-
-/* Constants */
-import { API_ROUTES } from "../components/common/constants";
 
 /* Hooks */
 import useCancelReservationModal from "@/hooks/useCancelReservationModal";
 
-type TripsClientProps = {
+type ReservationClientProps = {
 	reservations: ReservationsWithListing[];
 	currentUser?: User | null;
 };
 
-export default function TripsClient({
+export default function ReservationClient({
 	reservations,
 	currentUser,
-}: TripsClientProps) {
+}: ReservationClientProps) {
 	const router = useRouter();
 	const confirmModal = useCancelReservationModal();
 
@@ -68,16 +65,19 @@ export default function TripsClient({
 	);
 
 	const confirmModalBody = (
-		<Heading title="Are you sure you want to cancel this reservation?" />
+		<Heading
+			title="Are you sure you want to cancel this reservation?"
+			subtitle="A refund will be issued to the client."
+		/>
 	);
 
 	return (
 		<Container>
 			<Heading
-				title="Trips"
-				subtitle="Where you've been and where you're going."
+				title="My Reservations"
+				subtitle="Manage bookings on your properties"
 			/>
-			<ListingGrid sectionId="trips">
+			<ListingGrid sectionId="reservations">
 				{reservations.map((reservation) => (
 					<ListingCard
 						key={reservation.id}
@@ -85,7 +85,7 @@ export default function TripsClient({
 						reservation={reservation}
 						currentUser={currentUser}
 						actionLabel="Cancel reservation"
-						onAction={() => handleCancelReservationClick(reservation.id)}
+            onAction={() => handleCancelReservationClick(reservation.id)}
 					/>
 				))}
 				{/* Confirm Modal */}

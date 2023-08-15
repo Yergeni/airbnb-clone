@@ -77,7 +77,7 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 					onClick={handleYourRents}
 					className="hidden md:block py-3 px-4 rounded-full hover:bg-neutral-100 transition"
 				>
-					Your rents
+					New property
 				</button>
 				<button
 					onClick={toggleMenu}
@@ -104,10 +104,15 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 								}
 							/>
 							<MenuItem label="My favorites" onClick={() => {}} />
-							<MenuItem label="My reservations" onClick={() => {}} />
+							<MenuItem
+								label="My reservations"
+								onClick={() =>
+									handleMenuItemClick(() => router.push(ROUTES.RESERVATIONS))
+								}
+							/>
 							<MenuItem label="My properties" onClick={() => {}} />
 							<MenuItem
-								label="Aribnb my rent"
+								label="New property"
 								onClick={() => handleMenuItemClick(rentModal.onOpen)}
 							/>
 							<hr />
