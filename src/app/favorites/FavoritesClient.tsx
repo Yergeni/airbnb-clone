@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "../components/Container";
 import Heading from "../components/Heading";
 import ListingGrid from "../components/listings/ListingGrid";

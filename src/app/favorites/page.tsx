@@ -5,7 +5,6 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 /* Client Components */
 import NoDataState from "@/app/components/NoDataState";
 
-import React from "react";
 import FavoritesClient from "./FavoritesClient";
 
 export default async function FavoritesPage() {
