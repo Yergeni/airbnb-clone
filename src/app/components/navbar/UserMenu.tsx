@@ -103,14 +103,24 @@ export default function UserMenu({ currentUser }: UserMenuProps) {
 									handleMenuItemClick(() => router.push(ROUTES.TRIPS))
 								}
 							/>
-							<MenuItem label="My favorites" onClick={() => {}} />
+							<MenuItem
+								label="My favorites"
+								onClick={() =>
+									handleMenuItemClick(() => router.push(ROUTES.FAVORITES))
+								}
+							/>
 							<MenuItem
 								label="My reservations"
 								onClick={() =>
 									handleMenuItemClick(() => router.push(ROUTES.RESERVATIONS))
 								}
 							/>
-							<MenuItem label="My properties" onClick={() => {}} />
+							<MenuItem
+								label="My properties"
+								onClick={() =>
+									handleMenuItemClick(() => router.push(ROUTES.MY_PROPERTIES))
+								}
+							/>
 							<MenuItem
 								label="New property"
 								onClick={() => handleMenuItemClick(rentModal.onOpen)}
