@@ -11,3 +11,12 @@ export type RentFormValue = {
 	title: string;
 	description: string;
 };
+
+export type SearchFormValue = {
+	location: CountryValue | null;
+	guestCount: number;
+	roomCount: number;
+	bathroomCount: number;
+	dateRange: Range;
+	price: number;
+};
