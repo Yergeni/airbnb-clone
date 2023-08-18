@@ -1,8 +1,10 @@
 "use client";
 
+import { useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
-import { useCallback } from "react";
+
+/* Constants */
 import { SEARCH_PARAMS } from "./navbar/constants";
 
 /* Types */
