@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import { RentFormValue } from "@/app/components/modals/types";
+
+import type { RentFormValue } from "@/app/components/modals/types";
 
 export async function POST(request: Request) {
 	const currentUser = await getCurrentUser();
@@ -37,11 +38,11 @@ export async function POST(request: Request) {
 			bathroomCount,
 			guestCount,
 			roomCount,
-			price: parseInt((String(price)), 10),
+			price: parseInt(String(price), 10),
 			locationValue: location?.value || "",
 			userId: currentUser.id,
 		},
 	});
 
-  return NextResponse.json(listing);
+	return NextResponse.json(listing);
 }
