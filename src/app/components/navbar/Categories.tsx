@@ -34,7 +34,7 @@ export default function Categories() {
 
 	return (
 		<Container>
-			<div className="relative flex flex-row items-center scroll-smooth">
+			<div className="relative flex flex-row items-center">
 				<button
 					className="absolute lg:hidden rounded-full p-1 border top-9 left-0 md:-left-6 hover:bg-neutral-700 hover:text-white transition"
 					onClick={handleScrollLeft}
@@ -50,7 +50,7 @@ export default function Categories() {
 			</div>
 			<div
 				ref={catContainerRef}
-				className="pt-4 flex flex-row items-center justify-between overflow-x-auto no-scrollbar"
+				className="pt-4 flex flex-row items-center justify-between overflow-x-auto no-scrollbar scroll-smooth"
 			>
 				{CATEGORIES.map(({ label, icon, description }) => {
 					return (
