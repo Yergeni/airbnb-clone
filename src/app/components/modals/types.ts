@@ -1,3 +1,4 @@
+import { Range } from "react-date-range";
 import { CountryValue } from "../inputs/types";
 
 export type RentFormValue = {
@@ -11,3 +12,13 @@ export type RentFormValue = {
 	title: string;
 	description: string;
 };
+
+export type SearchFormValue = {
+	locationValue: CountryValue | null;
+	guestCount: number;
+	roomCount: number;
+	bathroomCount: number;
+	dateRange: Range;
+	minPrice: number;
+	maxPrice: number | null;
+}
