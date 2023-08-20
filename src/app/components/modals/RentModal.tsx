@@ -1,35 +1,30 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import {
-  FieldValues,
-  SubmitHandler,
-  useForm,
-  UseFormRegister,
-} from "react-hook-form";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { FieldValues, SubmitHandler, useForm, UseFormRegister } from 'react-hook-form';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 /* Components */
-import Modal from "./Modal";
-import Heading from "../Heading";
-import CategoryInput from "../inputs/CategoryInput";
-import CountrySelect from "../inputs/CountrySelect";
-import CounterInput from "../inputs/CounterInput";
-import ImageUpload from "../inputs/ImageUpload";
-import Input from "../inputs/Input";
+import Modal from './Modal';
+import Heading from '../Heading';
+import CategoryInput from '../inputs/CategoryInput';
+import CountrySelect from '../inputs/CountrySelect';
+import CounterInput from '../inputs/CounterInput';
+import ImageUpload from '../inputs/ImageUpload';
+import Input from '../inputs/Input';
 
 /* Hooks */
-import useRentModal from "@/hooks/useRentModal";
+import useRentModal from '@/hooks/useRentModal';
 
 /* Constants */
-import { CATEGORIES } from "../navbar/constants";
-import { API_ROUTES } from "../common/constants";
+import { CATEGORIES } from '../navbar/constants';
+import { API_ROUTES } from '../common/constants';
 
 /* Types */
-import { RentFormValue } from "./types";
+import { RentFormValue } from './types';
 
 enum STEPS {
   CATEGORY = 0,
@@ -42,15 +37,15 @@ enum STEPS {
 
 // needs to match prisma schema Listing model
 const DEFAULT_VALUES: RentFormValue = {
-  category: "",
+  category: '',
   location: null,
   guestCount: 1,
   roomCount: 1,
   bathroomCount: 1,
-  imageSrc: "",
+  imageSrc: '',
   price: 1,
-  title: "",
-  description: "",
+  title: '',
+  description: '',
 };
 
 export default function RentModal() {
@@ -71,15 +66,15 @@ export default function RentModal() {
   } = useForm<RentFormValue>({ defaultValues: DEFAULT_VALUES });
 
   // Watched values
-  const categoryValue = watch("category");
-  const locationValue = watch("location");
-  const guestCountValue = watch("guestCount");
-  const roomCountValue = watch("roomCount");
-  const bathroomCountValue = watch("bathroomCount");
-  const imageSrcValue = watch("imageSrc");
-  const titleValue = watch("title");
-  const descriptionValue = watch("description");
-  const priceValue = watch("price");
+  const categoryValue = watch('category');
+  const locationValue = watch('location');
+  const guestCountValue = watch('guestCount');
+  const roomCountValue = watch('roomCount');
+  const bathroomCountValue = watch('bathroomCount');
+  const imageSrcValue = watch('imageSrc');
+  const titleValue = watch('title');
+  const descriptionValue = watch('description');
+  const priceValue = watch('price');
 
   const disabledNext =
     (step === STEPS.CATEGORY && !categoryValue) ||
@@ -91,7 +86,7 @@ export default function RentModal() {
 
   // Dynamic import of the Map to make it work in NextJS and load it everytime location changes
   const DynamicMap = useMemo(
-    () => dynamic(() => import("../Map"), { ssr: false }),
+    () => dynamic(() => import('../Map'), { ssr: false }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [locationValue]
   );
@@ -116,13 +111,13 @@ export default function RentModal() {
     axios
       .post(API_ROUTES.LISTINGS, data)
       .then(() => {
-        toast("Listing created!");
+        toast('Listing created!');
         router.refresh();
         reset();
         setStep(STEPS.CATEGORY);
         rentModal.onClose();
       })
-      .catch(() => toast.error("Something went wrong."))
+      .catch(() => toast.error('Something went wrong.'))
       .finally(() => setIsLoading(false));
   };
 
@@ -130,34 +125,31 @@ export default function RentModal() {
     switch (step) {
       case STEPS.CATEGORY:
         return {
-          primary: "Next",
+          primary: 'Next',
         };
       case STEPS.PRICE:
         return {
-          primary: "Create",
-          secondary: "Back",
+          primary: 'Create',
+          secondary: 'Back',
         };
       default:
         return {
-          primary: "Next",
-          secondary: "Back",
+          primary: 'Next',
+          secondary: 'Back',
         };
     }
   }, [step]);
 
   let bodyContent = (
     <section className="flex flex-col gap-8">
-      <Heading
-        title="Which of these describes your place?"
-        subtitle="Pick a category"
-      />
+      <Heading title="Which of these describes your place?" subtitle="Pick a category" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
         {CATEGORIES.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
               label={item.label}
               icon={item.icon}
-              onClick={(category) => setCustomValue("category", category)}
+              onClick={(category) => setCustomValue('category', category)}
               selected={categoryValue === item.label}
             />
           </div>
@@ -169,13 +161,10 @@ export default function RentModal() {
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <section className="flex flex-col gap-8">
-        <Heading
-          title="Where is your place located?"
-          subtitle="Help guests find you!"
-        />
+        <Heading title="Where is your place located?" subtitle="Help guests find you!" />
         <CountrySelect
           value={locationValue}
-          onChange={(value) => setCustomValue("location", value)}
+          onChange={(value) => setCustomValue('location', value)}
         />
         <DynamicMap center={locationValue?.latlng} />
       </section>
@@ -193,21 +182,21 @@ export default function RentModal() {
           title="Guest capacity"
           subtitle="How many guests will be allowed?"
           value={guestCountValue}
-          onChange={(value) => setCustomValue("guestCount", value)}
+          onChange={(value) => setCustomValue('guestCount', value)}
         />
         <hr />
         <CounterInput
           title="Rooms"
           subtitle="How mant rooms does the rent has?"
           value={roomCountValue}
-          onChange={(value) => setCustomValue("roomCount", value)}
+          onChange={(value) => setCustomValue('roomCount', value)}
         />
         <hr />
         <CounterInput
           title="Bathrooms"
           subtitle="How mant bathrooms does the rent has?"
           value={bathroomCountValue}
-          onChange={(value) => setCustomValue("bathroomCount", value)}
+          onChange={(value) => setCustomValue('bathroomCount', value)}
         />
       </section>
     );
@@ -216,13 +205,10 @@ export default function RentModal() {
   if (step === STEPS.IMAGES) {
     bodyContent = (
       <section className="flex flex-col gap-8">
-        <Heading
-          title="Add photos of your rent"
-          subtitle="Show guest what your rent looks like!"
-        />
+        <Heading title="Add photos of your rent" subtitle="Show guest what your rent looks like!" />
         <ImageUpload
           value={imageSrcValue}
-          onChange={(value) => setCustomValue("imageSrc", value)}
+          onChange={(value) => setCustomValue('imageSrc', value)}
         />
       </section>
     );
@@ -231,10 +217,7 @@ export default function RentModal() {
   if (step === STEPS.DESCRIPTION) {
     bodyContent = (
       <section className="flex flex-col gap-8">
-        <Heading
-          title="How will you describe your rent?"
-          subtitle="Short and sweet works best!"
-        />
+        <Heading title="How will you describe your rent?" subtitle="Short and sweet works best!" />
         <Input
           key="title"
           id="title"
@@ -261,10 +244,7 @@ export default function RentModal() {
   if (step === STEPS.PRICE) {
     bodyContent = (
       <section className="flex flex-col gap-8">
-        <Heading
-          title="Set your price?"
-          subtitle="How much will you charge per night?"
-        />
+        <Heading title="Set your price?" subtitle="How much will you charge per night?" />
         <Input
           key="price"
           id="price"
