@@ -45,6 +45,8 @@
     "@types/bcrypt": "^5.0.0",
     "@types/leaflet": "^1.9.3",
     "@types/react-date-range": "^1.4.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.0",
     "prettier": "^3.0.2",
     "prisma": "^4.16.1"
   }
