@@ -36,9 +36,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## TODO and Improvements
 
 - Profile page
+
   - Add a profile page
-  - Allow user information updates 
+  - Allow user information updates
   - Allow change the password
+
+- Search Bar
+
+  - Add min and max price information
+  - Add an icon to clear filters
 
 - My Properties
   - Validates that a property does not have pending reservation before deleting
