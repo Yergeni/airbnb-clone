@@ -56,52 +56,51 @@ export default function SearchModal() {
     defaultValues: DEFAULT_SEARCH_VALUES,
   });
 
-  // Set default values if already in the URL
-  useEffect(() => {
-    if (params) {
-      const searchValues = queryString.parse(params.toString());
-      console.log('PARAMS: ', searchValues);
-      if (searchValues.locationValue && typeof searchValues.locationValue === 'string') {
-        const location = getByValue(searchValues.locationValue) || null;
-        setValue('locationValue', location);
-      }
+  // // Set default values if already in the URL
+  // useEffect(() => {
+  //   if (params) {
+  //     const searchValues = queryString.parse(params.toString());
+  //     if (searchValues.locationValue && typeof searchValues.locationValue === 'string') {
+  //       const location = getByValue(searchValues.locationValue) || null;
+  //       setValue('locationValue', location);
+  //     }
 
-      if (searchValues.bathroomCount) {
-        setValue('bathroomCount', +searchValues.bathroomCount);
-      }
+  //     if (searchValues.bathroomCount) {
+  //       setValue('bathroomCount', +searchValues.bathroomCount);
+  //     }
 
-      if (searchValues.guestCount) {
-        setValue('guestCount', +searchValues.guestCount);
-      }
+  //     if (searchValues.guestCount) {
+  //       setValue('guestCount', +searchValues.guestCount);
+  //     }
 
-      if (searchValues.roomCount) {
-        setValue('roomCount', +searchValues.roomCount);
-      }
+  //     if (searchValues.roomCount) {
+  //       setValue('roomCount', +searchValues.roomCount);
+  //     }
 
-      if (searchValues.minPrice) {
-        setValue('minPrice', +searchValues.minPrice);
-      }
+  //     if (searchValues.minPrice) {
+  //       setValue('minPrice', +searchValues.minPrice);
+  //     }
 
-      if (searchValues.maxPrice) {
-        setValue('maxPrice', +searchValues.maxPrice);
-      }
+  //     if (searchValues.maxPrice) {
+  //       setValue('maxPrice', +searchValues.maxPrice);
+  //     }
 
-      if (
-        searchValues.startDate &&
-        searchValues.endDate &&
-        typeof searchValues.startDate === 'string' &&
-        typeof searchValues.endDate === 'string'
-      ) {
-        const dateRangeSearchedValue: Range = {
-          ...DEFAULT_SEARCH_VALUES.dateRange,
-          startDate: new Date(searchValues.startDate),
-          endDate: new Date(searchValues.endDate),
-        };
+  //     if (
+  //       searchValues.startDate &&
+  //       searchValues.endDate &&
+  //       typeof searchValues.startDate === 'string' &&
+  //       typeof searchValues.endDate === 'string'
+  //     ) {
+  //       const dateRangeSearchedValue: Range = {
+  //         ...DEFAULT_SEARCH_VALUES.dateRange,
+  //         startDate: new Date(searchValues.startDate),
+  //         endDate: new Date(searchValues.endDate),
+  //       };
 
-        setValue('dateRange', dateRangeSearchedValue);
-      }
-    }
-  }, [getByValue, params, setValue]);
+  //       setValue('dateRange', dateRangeSearchedValue);
+  //     }
+  //   }
+  // }, [getByValue, params, setValue]);
 
   const minPriceValue = watch('minPrice');
   const maxPriceValue = watch('maxPrice');
@@ -136,7 +135,6 @@ export default function SearchModal() {
       return onNext();
     }
 
-    console.log(data);
     let currentQuery: Record<string, unknown> = {};
 
     if (params) {
