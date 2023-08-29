@@ -97,4 +97,12 @@ export const CATEGORIES: CategoryType[] = [
 
 export enum SEARCH_PARAMS {
   Category = 'category',
+  Location = 'locationValue',
+  GuestCount = 'guestCount',
+  RoomCount = 'roomCount',
+  BathroomCount = 'bathroomCount',
+  StartDate = 'startDate',
+  EndDate = 'endDate',
+  MinPrice = 'minPrice',
+  MaxPrice = 'maxPrice',
 }
