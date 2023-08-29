@@ -49,5 +49,11 @@
     "lint-staged": "^14.0.0",
     "prettier": "^3.0.2",
     "prisma": "^4.16.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,html}": [
+      "npm run lint",
+      "npm run format"
+    ]
   }
 }
