@@ -3,37 +3,30 @@
  */
 
 /* Server actions */
-import getCurrentUser from "../actions/getCurrentUser";
-import getReservations from "../actions/getReservations";
+import getCurrentUser from '../actions/getCurrentUser';
+import getReservations from '../actions/getReservations';
 
 /* Client Components */
-import NoDataState from "../components/NoDataState";
-import ReservationClient from "./ReservationClient";
+import NoDataState from '../components/NoDataState';
+import ReservationClient from './ReservationClient';
 
 export default async function ReservationPage() {
-	const currentUser = await getCurrentUser();
+  const currentUser = await getCurrentUser();
 
-	if (!currentUser) {
-		return (
-			<NoDataState
-				title="Unauthorized"
-				subTitle="Please, login to see your reservations."
-			/>
-		);
-	}
+  if (!currentUser) {
+    return <NoDataState title="Unauthorized" subTitle="Please, login to see your reservations." />;
+  }
 
-	const reservations = await getReservations({ authorId: currentUser.id });
+  const reservations = await getReservations({ authorId: currentUser.id });
 
-	if (!reservations || reservations?.length === 0) {
-		return (
-			<NoDataState
-				title="No reservations found."
-				subTitle="It looks like you don't have any reservations on your properties."
-			/>
-		);
-	}
+  if (!reservations || reservations?.length === 0) {
+    return (
+      <NoDataState
+        title="No reservations found."
+        subTitle="It looks like you don't have any reservations on your properties."
+      />
+    );
+  }
 
-	return (
-		<ReservationClient reservations={reservations} currentUser={currentUser} />
-	);
+  return <ReservationClient reservations={reservations} currentUser={currentUser} />;
 }

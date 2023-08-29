@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 // import Image from "next/image";
-import Select from "react-select";
+import Select from 'react-select';
 
-import { CountryValue } from "./types";
+import { CountryValue } from './types';
 
-import useCountries from "@/hooks/useCountries";
+import useCountries from '@/hooks/useCountries';
 
 // const flagCdnUrl = "https://flagcdn.com/";
 
@@ -39,23 +39,23 @@ export default function CountrySelect({ value, onChange }: CountrySelectProps) {
             </span>
             <p>
               {option.label}
-              {", "}
+              {', '}
               <span className="text-neutral-400 ml-1">{option.region}</span>
             </p>
           </div>
         )}
         classNames={{
-          control: () => "p-3 border-2",
-          input: () => "text-lg",
-          option: () => "text-lg",
+          control: () => 'p-3 border-2',
+          input: () => 'text-lg',
+          option: () => 'text-lg',
         }}
         theme={(theme) => ({
           ...theme,
           borderRadius: 6,
           colors: {
             ...theme.colors,
-            primary: "black",
-            primary25: "#ffe4e6",
+            primary: 'black',
+            primary25: '#ffe4e6',
           },
         })}
       />

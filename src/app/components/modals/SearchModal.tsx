@@ -1,32 +1,27 @@
-"use client";
+'use client';
 
-import dynamic from "next/dynamic";
-import queryString from "query-string";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import {
-  FieldValues,
-  SubmitHandler,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
+import dynamic from 'next/dynamic';
+import queryString from 'query-string';
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FieldValues, SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
 
 /* Components */
-import Modal from "./Modal";
-import Heading from "../Heading";
-import Input from "../inputs/Input";
-import CounterInput from "../inputs/CounterInput";
-import CalendarInput from "../inputs/CalendarInput";
-import CountrySelect from "../inputs/CountrySelect";
+import Modal from './Modal';
+import Heading from '../Heading';
+import Input from '../inputs/Input';
+import CounterInput from '../inputs/CounterInput';
+import CalendarInput from '../inputs/CalendarInput';
+import CountrySelect from '../inputs/CountrySelect';
 
 /* Types */
-import { SearchFormValue } from "./types";
+import { SearchFormValue } from './types';
 
 /* Hooks */
-import useSearchModal from "@/hooks/useSearchModal";
-import { formatISO } from "date-fns";
-import useCountries from "@/hooks/useCountries";
-import { Range } from "react-date-range";
+import useSearchModal from '@/hooks/useSearchModal';
+import { formatISO } from 'date-fns';
+import useCountries from '@/hooks/useCountries';
+import { Range } from 'react-date-range';
 
 enum STEPS {
   LOCATION = 0,
@@ -43,7 +38,7 @@ const DEFAULT_SEARCH_VALUES: SearchFormValue = {
   dateRange: {
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: 'selection',
   },
   minPrice: 0,
   maxPrice: null,
@@ -65,40 +60,37 @@ export default function SearchModal() {
   useEffect(() => {
     if (params) {
       const searchValues = queryString.parse(params.toString());
-      console.log("PARAMS: ", searchValues);
-      if (
-        searchValues.locationValue &&
-        typeof searchValues.locationValue === "string"
-      ) {
+      console.log('PARAMS: ', searchValues);
+      if (searchValues.locationValue && typeof searchValues.locationValue === 'string') {
         const location = getByValue(searchValues.locationValue) || null;
-        setValue("locationValue", location);
+        setValue('locationValue', location);
       }
 
       if (searchValues.bathroomCount) {
-        setValue("bathroomCount", +searchValues.bathroomCount);
+        setValue('bathroomCount', +searchValues.bathroomCount);
       }
 
       if (searchValues.guestCount) {
-        setValue("guestCount", +searchValues.guestCount);
+        setValue('guestCount', +searchValues.guestCount);
       }
 
       if (searchValues.roomCount) {
-        setValue("roomCount", +searchValues.roomCount);
+        setValue('roomCount', +searchValues.roomCount);
       }
 
       if (searchValues.minPrice) {
-        setValue("minPrice", +searchValues.minPrice);
+        setValue('minPrice', +searchValues.minPrice);
       }
 
       if (searchValues.maxPrice) {
-        setValue("maxPrice", +searchValues.maxPrice);
+        setValue('maxPrice', +searchValues.maxPrice);
       }
 
       if (
         searchValues.startDate &&
         searchValues.endDate &&
-        typeof searchValues.startDate === "string" &&
-        typeof searchValues.endDate === "string"
+        typeof searchValues.startDate === 'string' &&
+        typeof searchValues.endDate === 'string'
       ) {
         const dateRangeSearchedValue: Range = {
           ...DEFAULT_SEARCH_VALUES.dateRange,
@@ -106,22 +98,22 @@ export default function SearchModal() {
           endDate: new Date(searchValues.endDate),
         };
 
-        setValue("dateRange", dateRangeSearchedValue);
+        setValue('dateRange', dateRangeSearchedValue);
       }
     }
-  }, []);
+  }, [getByValue, params, setValue]);
 
-  const minPriceValue = watch("minPrice");
-  const maxPriceValue = watch("maxPrice");
-  const locationValue = watch("locationValue");
-  const dateRangeValue = watch("dateRange");
-  const roomCountValue = watch("roomCount");
-  const guestCountValue = watch("guestCount");
-  const bathroomCountValue = watch("bathroomCount");
+  const minPriceValue = watch('minPrice');
+  const maxPriceValue = watch('maxPrice');
+  const locationValue = watch('locationValue');
+  const dateRangeValue = watch('dateRange');
+  const roomCountValue = watch('roomCount');
+  const guestCountValue = watch('guestCount');
+  const bathroomCountValue = watch('bathroomCount');
 
   // Dynamic import of the Map to make it work in NextJS and load it everytime location changes
   const DynamicMap = useMemo(
-    () => dynamic(() => import("../Map"), { ssr: false }),
+    () => dynamic(() => import('../Map'), { ssr: false }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [locationValue]
   );
@@ -130,13 +122,13 @@ export default function SearchModal() {
   const onBack = () => setStep((value) => value - 1);
 
   const actionLabel = useMemo(() => {
-    if (step !== STEPS.PRICE) return "Next";
-    return "Search";
+    if (step !== STEPS.PRICE) return 'Next';
+    return 'Search';
   }, [step]);
 
   const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.LOCATION) return undefined;
-    return "Back";
+    return 'Back';
   }, [step]);
 
   const onSubmit: SubmitHandler<SearchFormValue> = (data) => {
@@ -162,13 +154,13 @@ export default function SearchModal() {
 
     if (dateRangeValue.startDate) {
       updatedQuery.startDate = formatISO(dateRangeValue.startDate, {
-        representation: "date",
+        representation: 'date',
       });
     }
 
     if (dateRangeValue.endDate) {
       updatedQuery.endDate = formatISO(dateRangeValue.endDate, {
-        representation: "date",
+        representation: 'date',
       });
     }
 
@@ -178,7 +170,7 @@ export default function SearchModal() {
 
     const url = queryString.stringifyUrl(
       {
-        url: "/",
+        url: '/',
         query: updatedQuery as Record<string, string>,
       },
       { skipNull: true }
@@ -192,14 +184,8 @@ export default function SearchModal() {
   // Modal body content
   let bodyContent = (
     <section className="flex flex-col gap-8">
-      <Heading
-        title="Where is your place located?"
-        subtitle="Help guests find you!"
-      />
-      <CountrySelect
-        value={locationValue}
-        onChange={(value) => setValue("locationValue", value)}
-      />
+      <Heading title="Where is your place located?" subtitle="Help guests find you!" />
+      <CountrySelect value={locationValue} onChange={(value) => setValue('locationValue', value)} />
       <DynamicMap center={locationValue?.latlng} />
     </section>
   );
@@ -207,13 +193,10 @@ export default function SearchModal() {
   if (step === STEPS.DATE) {
     bodyContent = (
       <section className="flex flex-col gap-8">
-        <Heading
-          title="When do you want to go?"
-          subtitle="Make sure dates are available!"
-        />
+        <Heading title="When do you want to go?" subtitle="Make sure dates are available!" />
         <CalendarInput
           rangeValue={[dateRangeValue]}
-          onChangeDate={(value) => setValue("dateRange", value.selection)}
+          onChangeDate={(value) => setValue('dateRange', value.selection)}
         />
       </section>
     );
@@ -227,21 +210,21 @@ export default function SearchModal() {
           title="Guests"
           subtitle="How many guests are coming?"
           value={guestCountValue}
-          onChange={(value) => setValue("guestCount", value)}
+          onChange={(value) => setValue('guestCount', value)}
         />
         <hr />
         <CounterInput
           title="Rooms"
           subtitle="How many rooms do you need?"
           value={roomCountValue}
-          onChange={(value) => setValue("roomCount", value)}
+          onChange={(value) => setValue('roomCount', value)}
         />
         <hr />
         <CounterInput
           title="Bathrooms"
           subtitle="How many bathrooms do you need?"
           value={bathroomCountValue}
-          onChange={(value) => setValue("bathroomCount", value)}
+          onChange={(value) => setValue('bathroomCount', value)}
         />
       </section>
     );
@@ -250,10 +233,7 @@ export default function SearchModal() {
   if (step === STEPS.PRICE) {
     bodyContent = (
       <section className="flex flex-col gap-8">
-        <Heading
-          title="Price"
-          subtitle="Find the perfect place for your budget"
-        />
+        <Heading title="Price" subtitle="Find the perfect place for your budget" />
         <div className="flex flex-row items-center justify-between gap-8">
           <Input
             key="minPrice"
