@@ -1,7 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { formatISO } from 'date-fns';
 import queryString from 'query-string';
+import { Range } from 'react-date-range';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FieldValues, SubmitHandler, UseFormRegister, useForm } from 'react-hook-form';
@@ -18,10 +20,11 @@ import CountrySelect from '../inputs/CountrySelect';
 import { SearchFormValue } from './types';
 
 /* Hooks */
-import useSearchModal from '@/hooks/useSearchModal';
-import { formatISO } from 'date-fns';
 import useCountries from '@/hooks/useCountries';
-import { Range } from 'react-date-range';
+import useSearchModal from '@/hooks/useSearchModal';
+
+/* Constants */
+import { SEARCH_PARAMS } from '../navbar/constants';
 
 enum STEPS {
   LOCATION = 0,
@@ -56,52 +59,51 @@ export default function SearchModal() {
     defaultValues: DEFAULT_SEARCH_VALUES,
   });
 
-  // Set default values if already in the URL
-  useEffect(() => {
-    if (params) {
-      const searchValues = queryString.parse(params.toString());
-      console.log('PARAMS: ', searchValues);
-      if (searchValues.locationValue && typeof searchValues.locationValue === 'string') {
-        const location = getByValue(searchValues.locationValue) || null;
-        setValue('locationValue', location);
-      }
+  // // Set default values if already in the URL
+  // useEffect(() => {
+  //   if (params) {
+  //     const searchValues = queryString.parse(params.toString());
+  //     if (searchValues.locationValue && typeof searchValues.locationValue === 'string') {
+  //       const location = getByValue(searchValues.locationValue) || null;
+  //       setValue('locationValue', location);
+  //     }
 
-      if (searchValues.bathroomCount) {
-        setValue('bathroomCount', +searchValues.bathroomCount);
-      }
+  //     if (searchValues.bathroomCount) {
+  //       setValue('bathroomCount', +searchValues.bathroomCount);
+  //     }
 
-      if (searchValues.guestCount) {
-        setValue('guestCount', +searchValues.guestCount);
-      }
+  //     if (searchValues.guestCount) {
+  //       setValue('guestCount', +searchValues.guestCount);
+  //     }
 
-      if (searchValues.roomCount) {
-        setValue('roomCount', +searchValues.roomCount);
-      }
+  //     if (searchValues.roomCount) {
+  //       setValue('roomCount', +searchValues.roomCount);
+  //     }
 
-      if (searchValues.minPrice) {
-        setValue('minPrice', +searchValues.minPrice);
-      }
+  //     if (searchValues.minPrice) {
+  //       setValue('minPrice', +searchValues.minPrice);
+  //     }
 
-      if (searchValues.maxPrice) {
-        setValue('maxPrice', +searchValues.maxPrice);
-      }
+  //     if (searchValues.maxPrice) {
+  //       setValue('maxPrice', +searchValues.maxPrice);
+  //     }
 
-      if (
-        searchValues.startDate &&
-        searchValues.endDate &&
-        typeof searchValues.startDate === 'string' &&
-        typeof searchValues.endDate === 'string'
-      ) {
-        const dateRangeSearchedValue: Range = {
-          ...DEFAULT_SEARCH_VALUES.dateRange,
-          startDate: new Date(searchValues.startDate),
-          endDate: new Date(searchValues.endDate),
-        };
+  //     if (
+  //       searchValues.startDate &&
+  //       searchValues.endDate &&
+  //       typeof searchValues.startDate === 'string' &&
+  //       typeof searchValues.endDate === 'string'
+  //     ) {
+  //       const dateRangeSearchedValue: Range = {
+  //         ...DEFAULT_SEARCH_VALUES.dateRange,
+  //         startDate: new Date(searchValues.startDate),
+  //         endDate: new Date(searchValues.endDate),
+  //       };
 
-        setValue('dateRange', dateRangeSearchedValue);
-      }
-    }
-  }, [getByValue, params, setValue]);
+  //       setValue('dateRange', dateRangeSearchedValue);
+  //     }
+  //   }
+  // }, [getByValue, params, setValue]);
 
   const minPriceValue = watch('minPrice');
   const maxPriceValue = watch('maxPrice');
@@ -136,7 +138,6 @@ export default function SearchModal() {
       return onNext();
     }
 
-    console.log(data);
     let currentQuery: Record<string, unknown> = {};
 
     if (params) {
@@ -145,27 +146,27 @@ export default function SearchModal() {
 
     const updatedQuery: Record<string, unknown> = {
       ...currentQuery,
-      locationValue: locationValue?.value,
-      guestCount: guestCountValue,
-      roomCount: roomCountValue,
-      bathroomCount: bathroomCountValue,
-      minPrice: minPriceValue,
+      [SEARCH_PARAMS.Location]: locationValue?.value,
+      [SEARCH_PARAMS.GuestCount]: guestCountValue,
+      [SEARCH_PARAMS.RoomCount]: roomCountValue,
+      [SEARCH_PARAMS.BathroomCount]: bathroomCountValue,
+      [SEARCH_PARAMS.MinPrice]: minPriceValue,
     };
 
     if (dateRangeValue.startDate) {
-      updatedQuery.startDate = formatISO(dateRangeValue.startDate, {
+      updatedQuery[SEARCH_PARAMS.StartDate] = formatISO(dateRangeValue.startDate, {
         representation: 'date',
       });
     }
 
     if (dateRangeValue.endDate) {
-      updatedQuery.endDate = formatISO(dateRangeValue.endDate, {
+      updatedQuery[SEARCH_PARAMS.EndDate] = formatISO(dateRangeValue.endDate, {
         representation: 'date',
       });
     }
 
     if (maxPriceValue) {
-      updatedQuery.maxPrice = maxPriceValue;
+      updatedQuery[SEARCH_PARAMS.MaxPrice] = maxPriceValue;
     }
 
     const url = queryString.stringifyUrl(

@@ -7,7 +7,7 @@ type LoadingProps = {
   text?: string;
 };
 
-export default function Loading({ small, text }: LoadingProps) {
+export default function InnerLoading({ small, text }: LoadingProps) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <VscLoading size={small ? 18 : 32} className="fill-rose-500 animate-spin" />

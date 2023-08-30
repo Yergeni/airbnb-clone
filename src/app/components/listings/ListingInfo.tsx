@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 /* Components */
 import Avatar from '../Avatar';
-import Loading from '../Loading';
+import InnerLoading from '../InnerLoading';
 import ListingCategory from './ListingCategory';
 
 /* Types */
@@ -18,7 +18,7 @@ import useCountries from '@/hooks/useCountries';
 const Map = React.memo(
   dynamic(() => import('../Map'), {
     ssr: false,
-    loading: () => <Loading text="Retrieving location..." />,
+    loading: () => <InnerLoading text="Retrieving location..." />,
   })
 );
 
