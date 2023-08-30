@@ -20,6 +20,12 @@ export const metadata = {
   description: 'Airbnb clone app',
 };
 
+/**
+ *  To fix issues during build
+ * @link https://nextjs.org/docs/messages/app-static-to-dynamic-error
+ * */
+export const dynamic = 'force-dynamic';
+
 type RootLayoutProps = {
   children: React.ReactNode;
 };
