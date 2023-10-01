@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react'; // https://next-auth.js.org/getting-started/client#signin
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
@@ -21,7 +21,7 @@ import useRegisterModal from '@/hooks/useRegisterModal';
 
 const formDefaulValues = {
   email: '',
-  password: '',
+  password: 'john1234',
 };
 
 export default function LoginModal() {
@@ -55,7 +55,14 @@ export default function LoginModal() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FieldValues>({ defaultValues: formDefaulValues });
+
+  // Set a default value for easy test
+  useEffect(() => {
+    setValue('email', 'johndoe@mail.com');
+    setValue('password', 'john1234');
+  }, []);
 
   const toggleAuthProcess = () => {
     loginModal.onClose();
@@ -90,13 +97,13 @@ export default function LoginModal() {
 
   const footerContent = (
     <div className="flex flex-col gap-4 mt-3">
-      <hr />
+      {/* <hr />
       <Button outline icon={FcGoogle} onClick={() => signIn('google')}>
         Continue with Google
       </Button>
       <Button outline icon={AiFillGithub} onClick={() => signIn('github')}>
         Continue with GitHub
-      </Button>
+      </Button> */}
       <p className="text-neutral-500 text-center mt-4 font-light">
         <span>First time using Airbnb Clone?</span>
         <span
